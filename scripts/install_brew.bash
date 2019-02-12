@@ -36,7 +36,13 @@ brew install bison
 brew install flex
 brew install pkg-config
 brew install python
+
+# qt
 brew install qt
+brew install qjson
+brew install osgeo/osgeo4mac/qmysql
+brew install osgeo/osgeo4mac/qodbc
+brew install osgeo/osgeo4mac/qpsql
 brew install pyqt
 
 # pyproj has bug for python3, unable to install from pip3
@@ -88,7 +94,6 @@ brew install qtkeychain
 brew install qscintilla2
 brew install qwt
 brew install qwtpolar
-brew install qjson
 brew install sqlite
 brew install expat
 brew install proj
