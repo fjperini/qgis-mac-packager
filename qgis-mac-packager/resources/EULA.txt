@@ -53,3 +53,5 @@ libz license
 libzip license
 libzstd license
 sip license
+
+MacOS bundle is created by https://github.com/al45tair/dmgbuild (MIT License)

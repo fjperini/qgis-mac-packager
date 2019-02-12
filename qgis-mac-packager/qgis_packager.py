@@ -182,19 +182,11 @@ if dmg:
         print("Removing old dmg")
         os.remove(dmgFile)
 
-    args = ["create-dmg",
-            "--volname", "QGIS Installer",
-            "--volicon", resourcesDir + "/QGIS.icns",
-            "--background", resourcesDir + "/background.jpg",
-            "--window-pos", "200", "120",
-            "--window-size", "800", "600",
-            "--icon-size", "120",
-            "--icon", resourcesDir + "/qgis-icon-120x120.png" ,"300", "190",
-            "--hide-extension", qgisAppName,
-            "--app-drop-link", "600", "185",
-            "--eula", resourcesDir + "/EULA.txt",
+    args = ["dmgbuild",
+            "-Dapp=" + qgisApp,
+            "-s", resourcesDir + "/dmgsettings.py",
+            qgisAppName,
             dmgFile,
-            qgisApp
             ]
 
     out = subprocess.check_output(args, encoding='UTF-8')

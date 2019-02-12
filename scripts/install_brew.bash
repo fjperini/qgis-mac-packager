@@ -28,7 +28,6 @@ brew tap osgeo/osgeo4mac
 brew install fcgi
 brew install git
 brew install cmake
-brew install create-dmg
 brew install ninja
 brew install gsl
 brew install sip
@@ -82,6 +81,9 @@ brew install osgeo/osgeo4mac/postgis2
 pip3 install dropbox
 pip3 install GitPython
 pip3 install owslib
+
+# https://github.com/al45tair/dmgbuild/issues/12
+pip install dmgbuild
 
 # qgis deps
 # brew install osgeo/osgeo4mac/qgis3 --only-dependencies
