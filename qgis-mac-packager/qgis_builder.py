@@ -109,7 +109,7 @@ prefix_path = "/usr/local/opt/qt;/usr/local/opt/qt5-webkit;/usr/local/opt/qscint
 prefix_path += "/usr/local/opt/qca;/usr/local/opt/gdal2;/usr/local/opt/gsl;/usr/local/opt/geos;/usr/local/opt/proj;"
 prefix_path += "/usr/local/opt/libspatialite;/usr/local/opt/spatialindex;/usr/local/opt/fcgi;/usr/local/opt/expat;"
 prefix_path += "/usr/local/opt/sqlite;/usr/local/opt/flex;/usr/local/opt/bison;/usr/local/opt/libzip;"
-prefix_path += "/usr/local/opt/libtasn1;/usr/local/opt/grass7;/usr/local/opt/exiv2"
+prefix_path += "/usr/local/opt/libtasn1;/usr/local/opt/grass7;/usr/local/opt/exiv2;/usr/local/opt/libssh"
 
 for path in prefix_path.split(";"):
     if not os.path.exists(path):
@@ -136,8 +136,6 @@ cmake_args = ["cmake",
         "-DQGIS_MACAPP_BUNDLE=0",
         "-DWITH_3D=TRUE",
         "-DWITH_BINDINGS=TRUE",
-        "-DEXIV2_INCLUDE_DIR=/usr/local/opt/exiv2/include",
-        "-DEXIV2_LIBRARY=/usr/local/opt/exiv2/lib/libexiv2.dylib",
         "-DCMAKE_FIND_FRAMEWORK=LAST" # FindGEOS.cmake is confused because it finds geos library but not framework Info.plist
        ]
 
