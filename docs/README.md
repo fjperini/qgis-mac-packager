@@ -5,14 +5,10 @@ Please report any issues on [GitHub issue tracker](https://github.com/lutraconsu
 - [Latest Release 3.4.4](https://www.dropbox.com/sh/qcr9a6ry25n4x91/AABQ78LJIlKTCTMRj8H0L3u4a?dl=0)
 - [Nightly Builds (master)](https://www.dropbox.com/sh/cc3615b1zd7ruwz/AACfBDg0GVfdgAt-FGMZiuaba?dl=0)
 
-# We are running a [crowdfunding](https://www.lutraconsulting.co.uk/crowdfunding/macos-qgis/) initiative to improve the packaging process and incorporate these packages as official QGIS macOS. Please consider donation to our campaign.
-
 ## Notes 
 
-- The LTR package will be added in February 2019
-- Minimum supported MacOS version for PR 3.4.4 builds is 10.11*
-- Minimum supported MacOS version for nightly builds is 10.11*
-- *Python support is not available on 10.11 and 10.12 due to the [upstream bug](https://github.com/lutraconsulting/qgis-mac-packager/issues/22)
+- The LTR package will be added 22nd February 2019
+- Minimum supported MacOS version is 10.13 ([details](https://github.com/lutraconsulting/qgis-mac-packager/issues/22))
 - QGIS [must be installed](https://github.com/lutraconsulting/qgis-mac-packager/issues/11) in /Applications/QGIS\<version\>.app
 
 ## Highlights
