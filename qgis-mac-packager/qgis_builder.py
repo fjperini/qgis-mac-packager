@@ -109,7 +109,7 @@ prefix_path = "/usr/local/opt/qt;/usr/local/opt/qt5-webkit;/usr/local/opt/qscint
 prefix_path += "/usr/local/opt/qca;/usr/local/opt/gdal2;/usr/local/opt/gsl;/usr/local/opt/geos;/usr/local/opt/proj;"
 prefix_path += "/usr/local/opt/libspatialite;/usr/local/opt/spatialindex;/usr/local/opt/fcgi;/usr/local/opt/expat;"
 prefix_path += "/usr/local/opt/sqlite;/usr/local/opt/flex;/usr/local/opt/bison;/usr/local/opt/libzip;"
-prefix_path += "/usr/local/opt/libtasn1;/usr/local/opt/grass7;/usr/local/opt/exiv2;/usr/local/opt/libssh"
+prefix_path += "/usr/local/opt/libtasn1;/usr/local/opt/grass7"
 
 for path in prefix_path.split(";"):
     if not os.path.exists(path):
