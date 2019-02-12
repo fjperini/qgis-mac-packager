@@ -165,7 +165,8 @@ print("Copying GRASS7 " + pa.grass7Host)
 cp.copytree(pa.grass7Host, pa.grass7Dir, symlinks=True)
 # TODO this is really just bash script that points to wrong location
 # we should copy also one from libexe/grass and fix this one!
-cp.copy(pa.grass7Host + "/../bin/grass74", pa.grass7Dir + "/bin")
+# TODO do not hardcode grass version here!
+cp.copy(pa.grass7Host + "/../bin/grass76", pa.grass7Dir + "/bin")
 subprocess.call(['chmod', '-R', '+w', pa.grass7Dir])
 subprocess.call(['chmod', '-R', '+x', pa.grass7Dir + "/bin"])
 

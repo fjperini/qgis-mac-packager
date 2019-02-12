@@ -121,7 +121,12 @@ brew install gdal2-python
 # brew install oracle-client-sdk
 brew cask install XQuartz # requirement of grass7
 brew install grass7
+
 brew install gettext
+
+#/usr/local/opt/grass7/grass-base/include/grass/glocale.h:9:10: fatal error: 'libintl.h' file not found
+brew link gettext --force
+
 brew install gpsbabel
 brew install pyspatialite
 brew install r
