@@ -21,7 +21,6 @@ def _patch_file(pa, filepath, keyword, replace_from, replace_to):
     with open(filepath, "r") as f:
         c = f.read()
 
-        # add minimum version
         if keyword in c:
             raise QGISBundlerError("Ups {} already present in info {}".format(keyword, filepath))
 
@@ -179,6 +178,16 @@ def patch_files(pa, min_os):
         if keyword not in c:
             raise QGISBundlerError("Missing {} in info {}".format(keyword, infoplist))
 
+
+    # Fix sqlite module
+    qgis_utils_file = os.path.join(pa.pythonDir, "qgis/utils.py")
+    spatialite_mod_path = destContents + "/MacOS/lib/mod_spatialite.7.dylib"
+
+    _patch_file(pa, qgis_utils_file,
+                spatialite_mod_path,
+                "\"mod_spatialite\"",
+                "\"" + spatialite_mod_path + "\""
+                )
 
 def append_recursively_site_packages(cp, sourceDir, destDir):
     for item in os.listdir(sourceDir):

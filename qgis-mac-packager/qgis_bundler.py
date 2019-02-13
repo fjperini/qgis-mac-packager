@@ -209,6 +209,11 @@ pyqtpluginfile = os.path.join(pyqtHostDir, os.pardir, os.pardir, os.pardir, os.p
 cp.copytree(pyqtpluginfile, pa.pluginsDir + "/PyQt5", True)
 subprocess.call(['chmod', '-R', '+w', pa.pluginsDir + "/PyQt5"])
 
+# https://github.com/lutraconsulting/qgis-mac-packager/issues/44
+# when number 7 changes, change also in steps.py
+print("Copying mod_spatiallite")
+cp.copy("/usr/local/opt/libspatialite/lib/mod_spatialite.7.dylib", os.path.join(pa.libDir, "mod_spatialite.7.dylib"))
+
 print(100*"*")
 print("STEP 1: Analyze the libraries we need to bundle")
 print(100*"*")
