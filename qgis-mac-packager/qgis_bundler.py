@@ -100,6 +100,7 @@ class Paths:
         self.pythonHost = os.path.realpath(args.python)
         self.pysitepackages = os.path.join(os.path.dirname(self.pythonHost), "lib", "python3.7", "site-packages")
         self.gdalHost = os.path.realpath(args.gdal)
+        self.gdalPythonHost = os.path.realpath(args.gdal + "-python")
         self.sagaHost = os.path.realpath(args.saga)
         self.grass7Host = os.path.realpath(args.grass7)
 
@@ -156,6 +157,11 @@ for item in os.listdir(pa.gdalHost + "/bin"):
     cp.copy(pa.gdalHost + "/bin/" + item, pa.binDir)
 cp.copytree(pa.gdalHost + "/share/gdal", pa.gdalDataDir, symlinks=False)
 subprocess.call(['chmod', '-R', '+w', pa.gdalDataDir])
+
+print("Copying GDAL-PYTHON" + pa.gdalPythonHost)
+for item in os.listdir(pa.gdalPythonHost + "/bin"):
+    if not os.path.isdir(pa.gdalPythonHost + "/bin/" + item):
+        cp.copy(pa.gdalPythonHost + "/bin/" + item, pa.binDir)
 
 print("Copying SAGA " + pa.sagaHost)
 cp.copy(pa.sagaHost + "/bin/saga_cmd", pa.binDir)
