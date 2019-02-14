@@ -29,34 +29,42 @@ echo "Please run brew update manually to get new deps"
 
 cd $DIR/../qgis-mac-packager
 echo "Run build"
-python3 qgis_builder.py \
-   --output_directory $BUILD_DIR \
-   --git $GIT --min_os ${MINOS}
+if true; then
+    python3 qgis_builder.py \
+       --output_directory $BUILD_DIR \
+       --git $GIT --min_os ${MINOS}
+fi
 
 echo "Bundle"
-python3 qgis_bundler.py \
-  --qgis_install_tree $BUILD_DIR/install  \
-  --output_directory $BUILD_DIR/bundle  \
-  --python /usr/local/opt/python3/Frameworks/Python.framework/Versions/3.7/Python \
-  --pyqt /usr/local/opt/pyqt5/lib/python3.7/site-packages/PyQt5 \
-  --gdal /usr/local/opt/gdal2 \
-  --saga /usr/local/opt/saga-gis-lts \
-  --grass7 /usr/local/opt/grass7/grass-base \
-  --min_os ${MINOS} \
-  --qgisapp_name ${QGISAPP}
+if true; then
+    python3 qgis_bundler.py \
+      --qgis_install_tree $BUILD_DIR/install  \
+      --output_directory $BUILD_DIR/bundle  \
+      --python /usr/local/opt/python3/Frameworks/Python.framework/Versions/3.7/Python \
+      --pyqt /usr/local/opt/pyqt5/lib/python3.7/site-packages/PyQt5 \
+      --gdal /usr/local/opt/gdal2 \
+      --saga /usr/local/opt/saga-gis-lts \
+      --grass7 /usr/local/opt/grass7/grass-base \
+      --min_os ${MINOS} \
+      --qgisapp_name ${QGISAPP}
+fi
 
 echo "Package"
-python3 qgis_packager.py \
-  --qgisApp $BUILD_DIR/bundle/${QGISAPP} \
-  --outname=$BUILD_DIR/$PACKAGE \
-  --sign $DIR/../../sign_identity.txt \
-  --keychain $DIR/../../qgis.keychain-db
+if true; then
+    python3 qgis_packager.py \
+      --qgisApp $BUILD_DIR/bundle/${QGISAPP} \
+      --outname=$BUILD_DIR/$PACKAGE \
+      --sign $DIR/../../sign_identity.txt \
+      --keychain $DIR/../../qgis.keychain-db
+fi
 
 echo "Upload"
-python3 qgis_uploader.py \
-  --dropbox=$DIR/../../dropbox_token.txt \
-  --destination=/$RELEASE/$PACKAGE \
-  --package=$BUILD_DIR/$PACKAGE
+if true; then
+    python3 qgis_uploader.py \
+      --dropbox=$DIR/../../dropbox_token.txt \
+      --destination=/$RELEASE/$PACKAGE \
+      --package=$BUILD_DIR/$PACKAGE
+fi
 
 echo "All done"
 cd $PWD

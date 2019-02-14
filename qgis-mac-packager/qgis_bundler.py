@@ -158,11 +158,6 @@ for item in os.listdir(pa.gdalHost + "/bin"):
 cp.copytree(pa.gdalHost + "/share/gdal", pa.gdalDataDir, symlinks=False)
 subprocess.call(['chmod', '-R', '+w', pa.gdalDataDir])
 
-print("Copying GDAL-PYTHON" + pa.gdalPythonHost)
-for item in os.listdir(pa.gdalPythonHost + "/bin"):
-    if not os.path.isdir(pa.gdalPythonHost + "/bin/" + item):
-        cp.copy(pa.gdalPythonHost + "/bin/" + item, pa.binDir)
-
 print("Copying SAGA " + pa.sagaHost)
 cp.copy(pa.sagaHost + "/bin/saga_cmd", pa.binDir)
 subprocess.call(['chmod', '-R', '+w', pa.binDir])
@@ -182,6 +177,15 @@ if os.path.exists(pa.binDir + "/qgis_bench.app"):
 
 print("Append Python site-packages")
 append_recursively_site_packages(cp, pa.pysitepackages, pa.pythonDir)
+
+# normally this is on bin/ but
+# we cannot place it there since it is not
+# possible to sign the bundle if there are
+# some non-binary files in bin/ folder
+# print("Copying GDAL-PYTHON" + pa.gdalPythonHost)
+# for item in os.listdir(pa.gdalPythonHost + "/bin"):
+#    if not os.path.isdir(pa.gdalPythonHost + "/bin/" + item):
+#        cp.copy(pa.gdalPythonHost + "/bin/" + item, pa.pythonDir)
 
 # TODO copy of python site-packages should be rather
 # selective an not copy-all and then remove

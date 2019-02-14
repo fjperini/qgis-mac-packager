@@ -373,9 +373,9 @@ def test_full_tree_consistency(pa):
             if pa.qgisApp not in filepath:
                 raise QGISBundlerError(" File " + root + "/" + file + " is not in bundle dir")
 
-    print("Test GDAL installation")
-    if not os.path.exists(pa.binDir + "/gdal_merge.py"):
-        raise QGISBundlerError("gdal_merge.py does not exist")
+    # print("Test GDAL installation")
+    # if not os.path.exists(pa.binDir + "/gdal_merge.py"):
+    #    raise QGISBundlerError("gdal_merge.py does not exist")
 
     gdalinfo = pa.binDir + "/gdalinfo"
     expected_formats = ["GRIB", "GPKG", "GTiff"]

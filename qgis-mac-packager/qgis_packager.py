@@ -189,7 +189,7 @@ if dmg:
             dmgFile,
             ]
 
-    out = subprocess.check_output(args, encoding='UTF-8')
+    out = subprocess.check_output(args, stderr=subprocess.STDOUT, encoding='UTF-8')
     print(out)
 
     if identity:
@@ -198,5 +198,5 @@ if dmg:
     else:
         print("Signing skipped, no identity supplied")
 
-    fsize = subprocess.check_output(["du", "-h", dmgFile], encoding='UTF-8')
+    fsize = subprocess.check_output(["du", "-h", dmgFile], stderr=subprocess.STDOUT, encoding='UTF-8')
     print("ALL DONE\n" + fsize)

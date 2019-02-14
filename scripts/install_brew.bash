@@ -39,6 +39,7 @@ brew install python
 # qt
 brew install qt
 brew install qjson
+brew install osgeo/osgeo4mac/qt5-webkit
 brew install osgeo/osgeo4mac/qmysql
 brew install osgeo/osgeo4mac/qodbc
 brew install osgeo/osgeo4mac/qpsql
