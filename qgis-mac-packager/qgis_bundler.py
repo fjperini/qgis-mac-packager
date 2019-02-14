@@ -103,6 +103,9 @@ class Paths:
         self.gdalPythonHost = os.path.realpath(args.gdal + "-python")
         self.sagaHost = os.path.realpath(args.saga)
         self.grass7Host = os.path.realpath(args.grass7)
+        self.mysqlDriverHost = "/usr/local/opt/qmysql/lib/qt/plugins/sqldrivers/libqsqlmysql.dylib"
+        self.psqlDriverHost = "/usr/local/opt/qpsql/lib/qt/plugins/sqldrivers/libqsqlpsql.dylib"
+        self.odbcDriverHost = "/usr/local/opt/qodbc/lib/qt/plugins/sqldrivers/libqsqlodbc.dylib"
 
         # new bundle destinations
         self.qgisApp = os.path.realpath(os.path.join(args.output_directory, args.qgisapp_name))
@@ -118,6 +121,7 @@ class Paths:
         self.binDir = os.path.join(self.macosDir, "bin")
         self.grass7Dir = os.path.join(self.resourcesDir, "grass7")
         self.gdalDataDir = os.path.join(self.resourcesDir, "gdal")
+        self.sqlDriversDir = os.path.join(self.pluginsDir, "sqldrivers")
 
         # install location
         self.installQgisAppName = args.qgisapp_name
@@ -151,6 +155,15 @@ if not os.path.exists(pa.binDir):
 print("Remove crssync")
 if os.path.exists(pa.libDir + "/qgis/crssync"):
     cp.rmtree(pa.libDir + "/qgis")
+
+# https://doc.qt.io/qt-5/sql-driver.html#supported-databases
+print("Copying QT SQL Drivers")
+if not os.path.exists(pa.sqlDriversDir):
+    os.makedirs(pa.sqlDriversDir)
+for item in [pa.mysqlDriverHost, pa.psqlDriverHost, pa.odbcDriverHost]:
+    if not os.path.exists(item):
+        raise QGISBundlerError("Unable to find QT driver " + item)
+    cp.copy(item, pa.sqlDriversDir)
 
 print("Copying GDAL" + pa.gdalHost)
 for item in os.listdir(pa.gdalHost + "/bin"):
@@ -223,6 +236,7 @@ subprocess.call(['chmod', '-R', '+w', pa.pluginsDir + "/PyQt5"])
 # when number 7 changes, change also in steps.py
 print("Copying mod_spatiallite")
 cp.copy("/usr/local/opt/libspatialite/lib/mod_spatialite.7.dylib", os.path.join(pa.libDir, "mod_spatialite.7.dylib"))
+
 
 print(100*"*")
 print("STEP 1: Analyze the libraries we need to bundle")
