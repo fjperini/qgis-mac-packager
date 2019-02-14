@@ -171,6 +171,18 @@ for item in os.listdir(pa.gdalHost + "/bin"):
 cp.copytree(pa.gdalHost + "/share/gdal", pa.gdalDataDir, symlinks=False)
 subprocess.call(['chmod', '-R', '+w', pa.gdalDataDir])
 
+# normally this should be on MacOS/bin/ so logic in GdalUtils.py works,
+# but .py file in MacOS/bin halts the signing of the bundle
+print("Copying GDAL-PYTHON" + pa.gdalPythonHost)
+if not os.path.exists(pa.gdalDataDir + "/bin"):
+    os.makedirs(pa.gdalDataDir + "/bin")
+if not os.path.exists(pa.binDir):
+    cp.makedirs(pa.binDir)
+for item in os.listdir(pa.gdalPythonHost + "/bin"):
+  if not os.path.isdir(pa.gdalPythonHost + "/bin/" + item):
+    cp.copy(pa.gdalPythonHost + "/bin/" + item, pa.gdalDataDir + "/bin/" + item)
+    cp.symlink(os.path.relpath(pa.gdalDataDir + "/bin/" + item, pa.binDir), pa.binDir + "/" + item)
+
 print("Copying SAGA " + pa.sagaHost)
 cp.copy(pa.sagaHost + "/bin/saga_cmd", pa.binDir)
 subprocess.call(['chmod', '-R', '+w', pa.binDir])
@@ -190,15 +202,6 @@ if os.path.exists(pa.binDir + "/qgis_bench.app"):
 
 print("Append Python site-packages")
 append_recursively_site_packages(cp, pa.pysitepackages, pa.pythonDir)
-
-# normally this is on bin/ but
-# we cannot place it there since it is not
-# possible to sign the bundle if there are
-# some non-binary files in bin/ folder
-# print("Copying GDAL-PYTHON" + pa.gdalPythonHost)
-# for item in os.listdir(pa.gdalPythonHost + "/bin"):
-#    if not os.path.isdir(pa.gdalPythonHost + "/bin/" + item):
-#        cp.copy(pa.gdalPythonHost + "/bin/" + item, pa.pythonDir)
 
 # TODO copy of python site-packages should be rather
 # selective an not copy-all and then remove
@@ -304,6 +307,9 @@ debug_lib = None
 
 while deps_queue:
     lib = deps_queue.pop()
+
+    if lib.endswith(".py"):
+        continue
 
     lib_fixed = lib
     # patch @rpath, @loader_path and @executable_path
@@ -573,6 +579,9 @@ for framework in frameworks:
         binaryDependencies = otool.get_binary_dependencies(pa, helper)
         install_name_tool.fix_lib(helper, binaryDependencies, pa.contentsDir, libPatchedPath, relLibPathToFramework)
         subprocess.call(['chmod', '+x', helper])
+        # add link to MacOS/bin too
+        cp.symlink(os.path.relpath(helper, pa.binDir), pa.binDir + "/python")
+        cp.symlink(os.path.relpath(helper, pa.binDir), pa.binDir + "/python3")
 
     helper = os.path.join(framework, "Versions/Current/lib/python3.7/lib-dynload")
     if os.path.exists(helper):
@@ -629,6 +638,7 @@ print(100*"*")
 exes = set()
 exes.add(pa.qgisExe)
 exes |= set(glob.glob(pa.frameworksDir + "/Python.framework/Versions/Current/bin/*"))
+exes |= set(glob.glob(pa.frameworksDir + "/Python.framework/Versions/Current/Resources/Python.app/Contents/MacOS/Python"))
 exes |= set(glob.glob(pa.binDir + "/*"))
 exes |= set(glob.glob(pa.grass7Dir + "/bin/*"))
 exes |= set(glob.glob(pa.grass7Dir + "/driver/db/*"))
@@ -647,15 +657,24 @@ for exe in exes:
                 pass
             subprocess.call(['chmod', '+x', exe])
 
+            exeDir = os.path.dirname(exe)
             # as we use @executable_path everywhere,
             # there is a problem
             # because QGIS and bin/* is different directory
-            exeDir = os.path.dirname(exe)
             if not os.path.exists(exeDir + "/lib"):
                 cp.symlink(os.path.relpath(pa.libDir, exeDir), exeDir + "/lib")
             testLink = os.path.realpath(exeDir + "/lib")
             if testLink != os.path.realpath(pa.libDir):
                 raise QGISBundlerError("invalid lib link!")
+
+            # we need to create symlinks to Frameworks, so for example python does not pick system Python 2.7 dylibs
+            # https://github.com/lutraconsulting/qgis-mac-packager/issues/60
+            if not os.path.exists(exeDir + "/../Frameworks"):
+                cp.symlink(os.path.relpath(pa.frameworksDir, os.path.join(exeDir, os.pardir) ), exeDir + "/../Frameworks")
+            testLink = os.path.realpath(exeDir + "/../Frameworks")
+            if testLink != os.path.realpath(pa.frameworksDir):
+                raise QGISBundlerError("invalid frameworks link!")
+
         else:
             print("Skipping link " + exe)
             subprocess.call(['chmod', '+x', exe])
