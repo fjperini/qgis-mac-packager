@@ -42,7 +42,10 @@ def icon_from_app(app_path):
 format = defines.get('format', 'UDBZ')
 
 # Volume size
-size = defines.get('size', None)
+# see https://github.com/lutraconsulting/qgis-mac-packager/issues/62
+# see https://dmgbuild.readthedocs.io/en/latest/settings.html#size
+# automatic calculation of size fails and some frameworks are not included
+size = defines.get('size', '10g')
 
 # Files to include
 files = [ application ]
