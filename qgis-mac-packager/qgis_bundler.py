@@ -121,11 +121,13 @@ class Paths:
         self.binDir = os.path.join(self.macosDir, "bin")
         self.grass7Dir = os.path.join(self.resourcesDir, "grass7")
         self.gdalDataDir = os.path.join(self.resourcesDir, "gdal")
+        self.sagaDataDir = os.path.join(self.resourcesDir, "saga")
         self.sqlDriversDir = os.path.join(self.pluginsDir, "sqldrivers")
 
         # install location
         self.installQgisAppName = args.qgisapp_name
         self.installQgisApp = "/Applications/" + self.installQgisAppName
+        self.sagaShareInstall = self.installQgisApp + "/Contents/Resources/saga"
 
 
 cp = utils.CopyUtils(os.path.realpath(args.output_directory))
@@ -185,6 +187,14 @@ for item in os.listdir(pa.gdalPythonHost + "/bin"):
 
 print("Copying SAGA " + pa.sagaHost)
 cp.copy(pa.sagaHost + "/bin/saga_cmd", pa.binDir)
+# https://github.com/lutraconsulting/qgis-mac-packager/issues/52
+# we need to have it in subfolder because there is where
+# qgis saga batch bash script expects the SAGA tools to be located
+cp.copytree(pa.sagaHost + "/share/saga", pa.sagaDataDir, symlinks=False)
+os.makedirs(pa.sagaDataDir + "/tools")
+for item in os.listdir(pa.sagaHost + "/lib/saga"):
+    cp.copy(pa.sagaHost + "/lib/saga/" + item, pa.sagaDataDir + "/tools/" + item)
+
 subprocess.call(['chmod', '-R', '+w', pa.binDir])
 
 print("Copying GRASS7 " + pa.grass7Host)
@@ -240,6 +250,8 @@ subprocess.call(['chmod', '-R', '+w', pa.pluginsDir + "/PyQt5"])
 print("Copying mod_spatiallite")
 cp.copy("/usr/local/opt/libspatialite/lib/mod_spatialite.7.dylib", os.path.join(pa.libDir, "mod_spatialite.7.dylib"))
 
+# at the end make it all writable
+subprocess.call(['chmod', '-R', '+w', pa.contentsDir])
 
 print(100*"*")
 print("STEP 1: Analyze the libraries we need to bundle")
@@ -303,7 +315,7 @@ deps_queue |= set(glob.glob(pa.grass7Dir + "/etc/*/*"))
 
 # DEBUGGING
 debug_lib = None
-# debug_lib = "libjpeg"
+# debug_lib = "libopencv_calib3d"
 
 while deps_queue:
     lib = deps_queue.pop()
@@ -315,7 +327,7 @@ while deps_queue:
     # patch @rpath, @loader_path and @executable_path
     if "@rpath" in lib_fixed:
         # replace rpath we know from homebrew
-        patched_path = lib_fixed.replace("@rpath", "/usr/local/Cellar/lapack/3.8.0_1/lib")
+        patched_path = lib_fixed.replace("@rpath", "/usr/local/opt/lapack/lib/")
         if os.path.exists(patched_path):
             lib_fixed = patched_path
         # now try the hint?
@@ -325,7 +337,7 @@ while deps_queue:
     lib_fixed = utils.resolve_libpath(pa, lib_fixed)
 
     if "@loader_path" in lib_fixed:
-        raise QGISBundlerError("Ups, broken otool.py? this should be resolved there " + lib_fixed)
+        raise QGISBundlerError("Ups, unable to get library path, maybe fix resolve_libpath? " + lib_fixed)
 
     if lib_fixed in done_queue:
         continue
@@ -350,11 +362,16 @@ while deps_queue:
         for l in binaryDependencies.libs:
             if debug_lib in l:
                print(100*"*")
-               print("JPEG: {} -- {}".format(debug_lib, lib))
+               print("DEBUG: {} -- {}".format(debug_lib, lib))
 
-    sys_libs |= set(binaryDependencies.sys_libs)
-    libs |= set(binaryDependencies.libs)
-    frameworks |= set(binaryDependencies.frameworks)
+
+    lib_fixed, type = otool.binary_type(lib_fixed)
+    if type is otool.SYS_LIB:
+        sys_libs |= set(binaryDependencies.sys_libs)
+    elif type is otool.FRAMEWORK:
+        frameworks |= set([lib_fixed])
+    elif type is otool.LIB:
+        libs |= set([lib_fixed])
 
     deps_queue |= set(binaryDependencies.libs)
     deps_queue |= set(binaryDependencies.frameworks)
@@ -376,10 +393,11 @@ unlinked_libs = set()
 unlink_links = set()
 
 for lib in libs:
-    # We assume that all libraries with @ are already bundled in QGIS.app
-    # TODO in conda they use rpath, so this is not true
-    if not lib or "@" in lib:
+    if not lib:
         continue
+
+    if ("@rpath" in lib) or ("@loader_path" in lib) or ("@executable_path" in lib):
+        raise QGISBundlerError("Ups, analysis of the library " + lib + " is wrong!")
 
     # libraries to lib dir
     # plugins to plugin dir/plugin name/, e.g. PlugIns/qgis, PlugIns/platform, ...
@@ -680,8 +698,10 @@ for exe in exes:
             subprocess.call(['chmod', '+x', exe])
 
 print(100*"*")
-print("STEP 7: Fix QCA_PLUGIN_PATH Qt Plugin path")
+print("STEP 7: Fix hardcoded paths in binaries")
 print(100*"*")
+
+print("Fix QCA_PLUGIN_PATH Qt Plugin path")
 # It looks like that QCA compiled with QCA_PLUGIN_PATH CMake define
 # adds this by default to QT_PLUGIN_PATH. Overwrite this
 # in resulting binary library
@@ -692,11 +712,67 @@ data=data.replace(bytes(qcaDir + "/lib/qt5/plugins", "utf-8"), bytes(qcaDir + "/
 f.seek(0)
 f.write(data)
 f.close()
-
 output = subprocess.check_output(["strings", qcaLib], encoding='UTF-8')
 if qcaLib in output:
     raise QGISBundlerError("Failed to patch " + qcaLib)
 
+# saga_cmd has hardcoded path to /usr/local to search for the tools and shared folder
+saga_ver = "2.3.2_4"
+if not os.path.exists("/usr/local/Cellar/saga-gis-lts/{}/lib/saga".format(saga_ver)):
+    raise QGISBundlerError("Maybe SAGA was updated?")
+
+basePathForLinks = pa.installQgisApp + "/Contents/Resources"
+# we need to replace with the string with same length
+if len(basePathForLinks + "/") < len("/usr/local/Cellar/saga-gis-lts/{}/lib/saga".format(saga_ver)):
+    link_length = len("/usr/local/Cellar/saga-gis-lts/{}/lib/saga".format(saga_ver)) - len(basePathForLinks +  "/")
+    sagaLibDir = ""
+    sagaLibDir += link_length * "a"
+    sagaLibInstall = basePathForLinks + "/" + sagaLibDir
+    print("patching SAGA shared data with " + sagaLibInstall)
+    cp.symlink(os.path.relpath(pa.sagaDataDir + "/tools", pa.resourcesDir), pa.resourcesDir + "/" + sagaLibDir)
+else:
+    raise QGISBundlerError("Unable to modify install path for SAGA lib folder")
+
+sagaBin = os.path.join(pa.binDir, "saga_cmd")
+f = open(sagaBin, 'rb+')
+data = f.read()
+# we need to replace same number of bytes to not breakup the lib
+if len("/usr/local/Cellar/saga-gis-lts/{}/lib/saga".format(saga_ver)) != len(sagaLibInstall):
+    raise QGISBundlerError("bad length  " + sagaLibInstall)
+data=data.replace(bytes("/usr/local/Cellar/saga-gis-lts/{}/lib/saga".format(saga_ver), "utf-8"),
+                  bytes(sagaLibInstall, "utf-8"))
+f.seek(0)
+f.write(data)
+f.close()
+
+# we need to replace with the string with same length
+if len(basePathForLinks + "/") < len("/usr/local/Cellar/saga-gis-lts/{}/share/saga".format(saga_ver)):
+    link_length = len("/usr/local/Cellar/saga-gis-lts/{}/share/saga".format(saga_ver)) - len(basePathForLinks + "/" )
+    sagaShareDir = ""
+    sagaShareDir += link_length * "b"
+    sagaShareInstall = basePathForLinks + "/" + sagaShareDir
+    print("patching SAGA shared data with " + sagaShareInstall)
+    cp.symlink(os.path.relpath(pa.sagaDataDir, pa.resourcesDir), pa.resourcesDir + "/" + sagaShareDir)
+else:
+    raise QGISBundlerError("Unable to modify install path for SAGA shared folder")
+
+f = open(sagaBin, 'rb+')
+data = f.read()
+if len("/usr/local/Cellar/saga-gis-lts/{}/share/saga".format(saga_ver)) != len(sagaShareInstall):
+    raise QGISBundlerError("bad length  " + sagaShareInstall)
+data=data.replace(bytes("/usr/local/Cellar/saga-gis-lts/{}/share/saga".format(saga_ver), "utf-8"),
+                  bytes(sagaShareInstall, "utf-8"))
+f.seek(0)
+f.write(data)
+f.close()
+
+output = subprocess.check_output(["strings", sagaBin], encoding='UTF-8')
+if "saga-gis-lts" in output:
+    raise QGISBundlerError("Failed to patch " + sagaBin)
+
+# unlink in lib/saga because here SAGA_MLB variable points in QGIS SAGA processing script
+if os.path.exists(pa.libDir + "/saga"):
+    raise QGISBundlerError("Extra dir in lib/saga")
 
 print(100*"*")
 print("STEP 8: Clean redundant files")

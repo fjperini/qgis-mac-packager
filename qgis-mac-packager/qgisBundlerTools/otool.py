@@ -34,6 +34,37 @@ def is_omach_file(binary):
     return "is not an object file" not in ret
 
 
+SYS_LIB = 1
+LIB = 2
+FRAMEWORK = 3
+BINARY = 4
+
+
+def binary_type(lib_path):
+    filename, file_extension = os.path.splitext(lib_path)
+    # hmmm, some broken library in python package
+    if "/DLC/h5py/" in lib_path:
+        lib_path = lib_path.replace("/DLC/h5py/", "/usr/local/lib/python3.7/site-packages/h5py/.dylibs/")
+    if "/DLC/psycopg2/" in lib_path:
+        lib_path = lib_path.replace("/DLC/psycopg2/", "/usr/local/lib/python3.7/site-packages/psycopg2/.dylibs/")
+
+    # note "/opt/X11" comes from XQuarz and it has ALREADY signed X libraries
+    if lib_path.startswith("/usr/lib/") or lib_path.startswith("/System/Library/"):
+        type = SYS_LIB
+        # current/lib and bin is for some reason Python has some bundled libs/exes in framework
+        # plugins is for dynamically loaded plugins in frameworks (e.g. Qt modules)
+    elif (".framework" in lib_path) and ("/plugins/" not in lib_path) and ("/Current/lib/" not in lib_path) and (
+            "/Current/bin/" not in lib_path):
+        type = FRAMEWORK
+    # elif [".dylib", ".so"] in lib_path:
+    elif file_extension in [".dylib", ".so"]:
+        type = LIB
+    else:
+        # binaries
+        type = BINARY
+    return lib_path, type
+
+
 def get_binary_dependencies(pa, binary):
     args = ["otool", "-L", binary]
     ret = subprocess.check_output(args, encoding='UTF-8')
@@ -54,27 +85,18 @@ def get_binary_dependencies(pa, binary):
         lib_parts = lib.split(" (")
         lib_path = lib_parts[0]
 
-        filename, file_extension = os.path.splitext(lib_path)
+        lib_path, type = binary_type(lib_path)
 
-        # hmmm, some broken library in python package
-        if "/DLC/h5py/" in lib_path:
-            lib_path = lib_path.replace("/DLC/h5py/", "/usr/local/lib/python3.7/site-packages/h5py/.dylibs/")
-        if "/DLC/psycopg2/" in lib_path:
-            lib_path = lib_path.replace("/DLC/psycopg2/", "/usr/local/lib/python3.7/site-packages/psycopg2/.dylibs/")
-
-        # note "/opt/X11" comes from XQuarz and it has ALREADY signed X libraries
-        if lib_path.startswith("/usr/lib/") or lib_path.startswith("/System/Library/"):
+        if type is SYS_LIB:
             sys_libs.append(lib_path)
-            # current/lib and bin is for some reason Python has some bundled libs/exes in framewoek
-            # plugins is for dynamically loaded plugins in frameworks (e.g. Qt modules)
-        elif (".framework" in lib_path) and ("/plugins/" not in lib_path) and ("/Current/lib/" not in lib_path) and ("/Current/bin/" not in lib_path):
+        elif type is FRAMEWORK:
             frameworks.append(lib_path)
-        # elif [".dylib", ".so"] in lib_path:
-        elif file_extension in [".dylib", ".so"]:
+        elif type is LIB:
             libs.append(lib_path)
-        else:
-            # binaries
+        elif type is BINARY:
             binaries.append(lib_path)
+        else:
+            raise Exception("Internal error: missing enum type " + type)
 
     # binaries must be copied manually to the destination
     return BinaryDependencies(libname, path, frameworks, sys_libs, libs)
