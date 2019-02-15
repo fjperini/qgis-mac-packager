@@ -7,7 +7,7 @@ if [ -f $(brew --prefix)/etc/bash_completion ]; then
 fi
 
 # Homebrew settings
-export PATH="/usr/local/sbin:$PATH"
+export PATH="/usr/local/sbin:/usr/local/bin/:$PATH"
 export HOMEBREW_NO_AUTO_UPDATE=1
 export HOMEBREW_CC=clang
 export HOMEBREW_CXX=clang++

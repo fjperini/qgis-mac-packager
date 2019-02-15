@@ -182,15 +182,19 @@ if dmg:
         print("Removing old dmg")
         os.remove(dmgFile)
 
-    args = ["dmgbuild",
+    args = ["/usr/local/bin/dmgbuild",
             "-Dapp=" + qgisApp,
             "-s", resourcesDir + "/dmgsettings.py",
             qgisAppName,
             dmgFile,
             ]
 
-    out = subprocess.check_output(args, stderr=subprocess.STDOUT, encoding='UTF-8')
-    print(out)
+    try:
+        out = subprocess.check_output(args, stderr=subprocess.STDOUT, encoding='UTF-8')
+        print(out)
+    except subprocess.CalledProcessError as err:
+        print(err.output)
+        raise
 
     if identity:
         sign_this(dmgFile, identity, keychainFile)
