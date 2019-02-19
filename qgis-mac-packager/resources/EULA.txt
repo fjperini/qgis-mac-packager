@@ -1,11 +1,18 @@
-QGIS bundle contains many packages and libraries bundled. Each
-has it's own license, but they are all open source.
-
-To determine a particular application's license terms examine the
-install package and/or the source projects' website.
+QGIS bundle contains many packages and libraries bundled. To determine a
+particular application's license terms examine the install package and/or
+the source projects' website.
 
 By installation of this package, you agree with all licenses for
-the bundled packages, notably:
+the bundled packages.
+
+This agreement contains 3 sections
+A) Open source projects
+B) 3rd party propriatory projects
+C) Individual text of licenses from B)
+
+-----------------------------------------------------------------------------------------------------
+
+A) Each of items in this list are open source:
 
 QGIS: GPLv2
 Python: PSF LICENSE
@@ -53,5 +60,16 @@ libz license
 libzip license
 libzstd license
 sip license
+dmgbuild: MIT
 
-MacOS bundle is created by https://github.com/al45tair/dmgbuild (MIT License)
+-----------------------------------------------------------------------------------------------------
+
+B) Package contains also these non-open source projects with licenses at the end of this document
+
+[1] ERDAS ECW/JP2 Desktop Read-Only Redistributable SDK License
+[2] LizardTech Computer Software License Agreement for MrSID Decode SDKs
+
+-----------------------------------------------------------------------------------------------------
+
+C) Text of licenses from section B)
+

@@ -179,6 +179,16 @@ list_column_sort_directions = {
 # .. License configuration .....................................................
 with open(thisFileDir + '/EULA.txt', 'r') as fh:
     eula=fh.read()
+with open(thisFileDir + '/license_ecw.txt', 'r') as fh:
+    eula += "\n" + 100 * "-"
+    eula += "\n[1] ERDAS ECW/JP2\n"
+    eula += 100 * "-" + "\n"
+    eula += fh.read()
+with open(thisFileDir + '/license_mrsid.txt', 'r') as fh:
+    eula += "\n" + 100 * "-"
+    eula += "\n[2] MrSID Decode SDKs\n"
+    eula += 100 * "-" + "\n"
+    eula += fh.read()
 
 license = {
      'default-language': 'en_US',
