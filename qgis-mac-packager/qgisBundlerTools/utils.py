@@ -30,6 +30,17 @@ def framework_name(framework):
     return frameworkName, path
 
 
+def is_text(fn):
+    msg = subprocess.Popen(["file", "--mime", fn],
+                           stdout=subprocess.PIPE,
+                           encoding='UTF-8',
+                           errors='replace').communicate()[0]
+    # returns something like
+    # <path>/libdelimitedtextprovider.so: application/x-mach-binary; charset=binary
+    msg = msg.replace(fn, "")
+    return "text" in msg
+
+
 def resolve_libpath(pa, lib_path):
     # loader path should be really resolved here, because
     # it is relative to this binary

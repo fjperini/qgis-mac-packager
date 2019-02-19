@@ -61,6 +61,11 @@ print("SAGA: " + args.saga)
 print("GRASS7: " + args.grass7)
 print("APPLE MINOS: "  + str(args.min_os))
 print("QGIS.app name: " + str(args.qgisapp_name))
+args.proj = "/usr/local/opt/proj/share"
+print("PROJ: " + args.proj)
+
+args.geotiff = "/usr/local/opt/libgeotiff/share/epsg_csv"
+print("GEOTIFF: " + args.geotiff)
 
 if not os.path.exists(args.python):
     raise QGISBundlerError(args.python + " does not exists")
@@ -88,6 +93,11 @@ if not os.path.exists(args.grass7 + "/bin"):
 if "/" in args.qgisapp_name:
     raise QGISBundlerError(args.qgisapp_name + " must not contain path separator")
 
+if not os.path.exists(args.proj + "/proj/proj_def.dat"):
+    raise QGISBundlerError(args.proj + " does not contain PROJ shared folder")
+
+if not os.path.exists(args.geotiff + "/coordinate_system.csv"):
+    raise QGISBundlerError(args.geotiff + " does not contain GEOTIFF shared folder")
 
 class Paths:
     def __init__(self, args):
@@ -106,6 +116,8 @@ class Paths:
         self.mysqlDriverHost = "/usr/local/opt/qmysql/lib/qt/plugins/sqldrivers/libqsqlmysql.dylib"
         self.psqlDriverHost = "/usr/local/opt/qpsql/lib/qt/plugins/sqldrivers/libqsqlpsql.dylib"
         self.odbcDriverHost = "/usr/local/opt/qodbc/lib/qt/plugins/sqldrivers/libqsqlodbc.dylib"
+        self.projHost = args.proj
+        self.geotiffHost = args.geotiff
 
         # new bundle destinations
         self.qgisApp = os.path.realpath(os.path.join(args.output_directory, args.qgisapp_name))
@@ -123,12 +135,18 @@ class Paths:
         self.gdalDataDir = os.path.join(self.resourcesDir, "gdal")
         self.sagaDataDir = os.path.join(self.resourcesDir, "saga")
         self.sqlDriversDir = os.path.join(self.pluginsDir, "sqldrivers")
+        self.projDir = os.path.join(self.resourcesDir, "proj")
+        self.geotiffDir = os.path.join(self.resourcesDir, "geotiff")
 
         # install location
         self.installQgisAppName = args.qgisapp_name
         self.installQgisApp = "/Applications/" + self.installQgisAppName
+        self.installQgisLib = self.installQgisApp + "/Contents/MacOS/lib"
         self.sagaShareInstall = self.installQgisApp + "/Contents/Resources/saga"
-
+        self.grass7Install = self.installQgisApp + "/Contents/Resources/grass7"
+        self.projShareInstall = self.installQgisApp + "/Contents/Resources/proj"
+        self.geotiffShareInstall = self.installQgisApp + "/Contents/Resources/geotiff"
+        self.gdalShareInstall = self.installQgisApp + "/Contents/Resources/gdal"
 
 cp = utils.CopyUtils(os.path.realpath(args.output_directory))
 pa = Paths(args)
@@ -199,10 +217,15 @@ subprocess.call(['chmod', '-R', '+w', pa.binDir])
 
 print("Copying GRASS7 " + pa.grass7Host)
 cp.copytree(pa.grass7Host, pa.grass7Dir, symlinks=True)
-# TODO this is really just bash script that points to wrong location
-# we should copy also one from libexe/grass and fix this one!
-# TODO do not hardcode grass version here!
+for item in os.listdir(pa.grass7Host + "/lib"):
+    if os.path.islink(pa.grass7Host + "/lib/" + item):
+        linkto = os.readlink(pa.grass7Host + "/lib/" + item)
+        os.symlink(linkto, pa.libDir + "/" + item)
+    else:
+        cp.copy(pa.grass7Host + "/lib/" + item, pa.libDir + "/" + item)
+cp.rmtree(pa.grass7Dir + "/lib")
 cp.copy(pa.grass7Host + "/../bin/grass76", pa.grass7Dir + "/bin")
+cp.copy(pa.grass7Host + "/../libexec/bin/grass76", pa.grass7Dir + "/bin/_grass76")
 subprocess.call(['chmod', '-R', '+w', pa.grass7Dir])
 subprocess.call(['chmod', '-R', '+x', pa.grass7Dir + "/bin"])
 
@@ -249,6 +272,12 @@ subprocess.call(['chmod', '-R', '+w', pa.pluginsDir + "/PyQt5"])
 # when number 7 changes, change also in steps.py
 print("Copying mod_spatiallite")
 cp.copy("/usr/local/opt/libspatialite/lib/mod_spatialite.7.dylib", os.path.join(pa.libDir, "mod_spatialite.7.dylib"))
+
+print("Copy PROJ shared folder")
+cp.copytree(pa.projHost, pa.projDir, True)
+
+print("Copy GEOTIFF shared folder")
+cp.copytree(pa.geotiffHost, pa.geotiffDir, True)
 
 # at the end make it all writable
 subprocess.call(['chmod', '-R', '+w', pa.contentsDir])
@@ -774,19 +803,39 @@ if "saga-gis-lts" in output:
 if os.path.exists(pa.libDir + "/saga"):
     raise QGISBundlerError("Extra dir in lib/saga")
 
+
 print(100*"*")
-print("STEP 8: Clean redundant files")
+print("STEP 8: Create some extra links")
+print(100*"*")
+# PROJ
+projLib = "libproj.13.dylib"
+if not os.path.exists(pa.libDir + "/" + projLib):
+    raise QGISBundlerError("Proj lib not present " + projLib + ". Maybe it has new version?")
+cp.symlink(projLib, pa.libDir + "/libproj.dylib")
+
+# GRASS7
+link = pa.grass7Dir + "/lib"
+if os.path.exists(link):
+    raise QGISBundlerError(link + " should have been deleted during grass7 copy.")
+cp.symlink(os.path.relpath(pa.libDir, pa.grass7Dir), link)
+cp.remove(pa.grass7Dir + "/grass.sh")
+cp.symlink("bin/grass76", pa.grass7Dir + "/grass.sh")
+cp.remove(pa.grass7Dir + "/grass76.sh")
+cp.symlink("bin/grass76", pa.grass7Dir + "/grass76.sh")
+
+print(100*"*")
+print("STEP 9: Clean redundant files")
 print(100*"*")
 clean_redundant_files(pa, cp)
 
 print(100 * "*")
-print("STEP 8: Patch files")
+print("STEP 10: Patch files")
 print(100 * "*")
 patch_files(pa, args.min_os)
 
 
 print(100 * "*")
-print("STEP 10: Test full tree QGIS.app")
+print("STEP 11: Test full tree QGIS.app")
 print(100 * "*")
 test_full_tree_consistency(pa)
 

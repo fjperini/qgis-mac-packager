@@ -6,6 +6,7 @@ import qgisBundlerTools.utils as utils
 import qgisBundlerTools.install_name_tool as install_name_tool
 import re
 
+
 class QGISBundlerError(Exception):
     pass
 
@@ -36,8 +37,12 @@ def _patch_file(pa, filepath, keyword, replace_from, replace_to):
         if keyword not in c:
             raise QGISBundlerError("Ups failed to add {} in info {}".format(keyword, filepath))
 
-
 def patch_files(pa, min_os):
+    patch_info_plist(pa, min_os)
+    patch_sqlite(pa)
+    patch_text_files(pa)
+
+def patch_info_plist(pa, min_os):
     add_python_home = True
     add_python_start = True
     add_python_path = True
@@ -179,6 +184,8 @@ def patch_files(pa, min_os):
             raise QGISBundlerError("Missing {} in info {}".format(keyword, infoplist))
 
 
+def patch_sqlite(pa):
+    destContents = pa.installQgisApp + "/Contents"
     # Fix sqlite module
     qgis_utils_file = os.path.join(pa.pythonDir, "qgis/utils.py")
     spatialite_mod_path = destContents + "/MacOS/lib/mod_spatialite.7.dylib"
@@ -188,6 +195,61 @@ def patch_files(pa, min_os):
                 "\"mod_spatialite\"",
                 "\"" + spatialite_mod_path + "\""
                 )
+
+
+def patch_text_files(pa):
+    # First patch GRASS7 shell script
+    grass7file = pa.grass7Dir + "/bin/grass76"
+    toreplace = """
+    export PYTHONHOME=XXX/Contents/Frameworks/Python.framework/Versions/Current
+export PYTHONPATH=XXX/Contents/Resources/python
+export GRASS_PYTHON=XXX/Contents/MacOS/bin/python
+export MANPATH="/usr/local/share/man:/usr/share/man:/opt/X11/share/man:/Library/Developer/CommandLineTools/usr/share/man"
+$GRASS_PYTHON XXX/Contents/Resources/grass7/bin/_grass76 $@
+""".replace("XXX", pa.installQgisApp)
+    _patch_file(pa,
+                grass7file,
+                "MANPATH",
+                "GRASS_PYTHON=python2 exec /usr/local/Cellar/grass7/7.6.0_2/libexec/bin/grass76",
+                toreplace)
+
+    # now crowl and replace in all other files
+    replacements = [
+        "/usr/local/Cellar/grass7/7.6.0_2/grass-base" + "~~>" + pa.grass7Install,
+        "/usr/local/Cellar/grass7/7.6.0_2/grass-7.6.0" + "~~>" + pa.grass7Install,
+        pa.projHost + "~~>" + pa.projShareInstall,
+        "/usr/local/Cellar/grass7/7.6.0_2/grass-7.6.0/lib" + "~~>" + pa.installQgisLib,
+        "/usr/local/opt/proj/lib" + "~~>" + pa.installQgisLib,
+        pa.geotiffHost + "~~>" + pa.geotiffShareInstall,
+        "/usr/local/opt/gdal2/share/gdal" + "~~>" + pa.gdalShareInstall,
+        "=python2 " + "~~>" + "=" + pa.installQgisApp + "/Contents/MacOS/bin/python ",
+        "/usr/local/Cellar/grass7/7.6.0_2/libexec/bin/grass76" + "~~>" + pa.grass7Install + "/bin/_grass76",
+        "/usr/local/opt/openblas/lib" + "~~>" + pa.installQgisLib,
+        "/usr/local/lib" + "~~>" + pa.installQgisLib,
+        # "/usr/local" + "~~>" + pa.installQgisApp
+    ]
+
+    for root, dirs, files in os.walk(pa.qgisApp):
+        for file in files:
+            filepath = os.path.join(root, file)
+            if utils.is_text(filepath):
+                try:
+                    with open(filepath, "r") as fh:
+                        orig_text = fh.read()
+                        text = orig_text
+                        for r in replacements:
+                            key = r.split("~~>")[0]
+                            value = r.split("~~>")[1]
+                            text = text.replace(key, value)
+
+                    if text != orig_text:
+                        print("Patching text file " + filepath)
+                        with open(filepath, "w") as fh:
+                            fh.write(text)
+                except Exception as e:
+                    # print("Failed to patch " + filepath )
+                    pass
+
 
 def append_recursively_site_packages(cp, sourceDir, destDir):
     for item in os.listdir(sourceDir):
@@ -230,7 +292,7 @@ def append_recursively_site_packages(cp, sourceDir, destDir):
 
 def clean_redundant_files(pa, cp):
     extensionsToCheck = [".a", ".pyc", ".c", ".cpp", ".h", ".hpp", ".cmake", ".prl"]
-    dirsToCheck = ["/include", "/Headers", "/__pycache__"]
+    dirsToCheck = ["/include", "/Headers", "/__pycache__", "/man/"]
 
     # remove unneeded files/dirs
     for root, dirnames, filenames in os.walk(pa.qgisApp):
@@ -377,9 +439,9 @@ def test_full_tree_consistency(pa):
             if pa.qgisApp not in filepath:
                 raise QGISBundlerError(" File " + root + "/" + file + " is not in bundle dir")
 
-    # print("Test GDAL installation")
-    # if not os.path.exists(pa.binDir + "/gdal_merge.py"):
-    #    raise QGISBundlerError("gdal_merge.py does not exist")
+    print("Test GDAL installation")
+    if not os.path.exists(pa.binDir + "/gdal_merge.py"):
+        raise QGISBundlerError("gdal_merge.py does not exist")
 
     gdalinfo = pa.binDir + "/gdalinfo"
     expected_formats = ["GRIB", "GPKG", "GTiff"]
@@ -396,3 +458,36 @@ def test_full_tree_consistency(pa):
         if f not in output:
             raise QGISBundlerError("format {} missing in gdalinfo --formats".format(f))
 
+    print("Test that all text files does not contain references to homebrew /usr/local")
+    errors = []
+    # TODO wondering what we really need from these files in the bundle
+    exceptions = [
+        "-config", # this file is to show the compilation flags of libraries
+        "sitecustomize.py", #this sets up python if used in homebrew context, so we do not need it here
+        "INSTALL",
+        "METADATA",
+        ".rst",
+        "SagaUtils.py", # saga already found by prefixPath + "bin"
+        ".txt",
+        ".html",
+        ".pc", #pkgconfig
+        "Makefile",
+        "Setup",
+
+    ]
+    for root, dirs, files in os.walk(pa.qgisApp):
+        for file in files:
+            filepath = os.path.join(root, file)
+            if any(filepath.endswith(ext) for ext in exceptions):
+                continue
+
+            if utils.is_text(filepath):
+                try:
+                    with open(filepath, "r", encoding='utf-8') as fh:
+                        if "/usr/local" in fh.read():
+                            errors += [filepath]
+                except UnicodeDecodeError:
+                    pass
+    if errors:
+        print("WARNING! reference to /usr/local")
+        print("{}".format("/n".join(errors)))
