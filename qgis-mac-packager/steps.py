@@ -164,7 +164,7 @@ def patch_info_plist(pa, min_os):
                                "GDAL_DRIVER_PATH",
                                "\t\t<key>QT_AUTO_SCREEN_SCALE_FACTOR</key>",
                                "\t\t<key>GDAL_DRIVER_PATH</key>\n" +
-                               "\t\t<string>{}/MacOS/lib</string>\n".format(destContents) +
+                               "\t\t<string>{}</string>\n".format(pa.gdalPluginsInstall) +
                                "\t\t<key>QT_AUTO_SCREEN_SCALE_FACTOR</key>"
                                )
 
@@ -172,7 +172,7 @@ def patch_info_plist(pa, min_os):
                                "GDAL_DATA",
                                "\t\t<key>QT_AUTO_SCREEN_SCALE_FACTOR</key>",
                                "\t\t<key>GDAL_DATA</key>\n" +
-                               "\t\t<string>{}/Resources/gdal</string>\n".format(destContents) +
+                               "\t\t<string>{}</string>\n".format(pa.gdalShareInstall) +
                                "\t\t<key>QT_AUTO_SCREEN_SCALE_FACTOR</key>"
                                )
 

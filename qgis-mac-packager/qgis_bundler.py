@@ -113,6 +113,7 @@ class Paths:
         self.gdalPythonHost = os.path.realpath(args.gdal + "-python")
         self.sagaHost = os.path.realpath(args.saga)
         self.grass7Host = os.path.realpath(args.grass7)
+        self.gdalPluginsHost = "/usr/local/lib/gdalplugins"
         self.mysqlDriverHost = "/usr/local/opt/qmysql/lib/qt/plugins/sqldrivers/libqsqlmysql.dylib"
         self.psqlDriverHost = "/usr/local/opt/qpsql/lib/qt/plugins/sqldrivers/libqsqlpsql.dylib"
         self.odbcDriverHost = "/usr/local/opt/qodbc/lib/qt/plugins/sqldrivers/libqsqlodbc.dylib"
@@ -133,6 +134,7 @@ class Paths:
         self.binDir = os.path.join(self.macosDir, "bin")
         self.grass7Dir = os.path.join(self.resourcesDir, "grass7")
         self.gdalDataDir = os.path.join(self.resourcesDir, "gdal")
+        self.gdalPluginsDir = os.path.join(self.gdalDataDir, "gdalplugins")
         self.sagaDataDir = os.path.join(self.resourcesDir, "saga")
         self.sqlDriversDir = os.path.join(self.pluginsDir, "sqldrivers")
         self.projDir = os.path.join(self.resourcesDir, "proj")
@@ -147,6 +149,7 @@ class Paths:
         self.projShareInstall = self.installQgisApp + "/Contents/Resources/proj"
         self.geotiffShareInstall = self.installQgisApp + "/Contents/Resources/geotiff"
         self.gdalShareInstall = self.installQgisApp + "/Contents/Resources/gdal"
+        self.gdalPluginsInstall = self.installQgisApp + "/Contents/Resources/gdal/gdalplugins"
 
 cp = utils.CopyUtils(os.path.realpath(args.output_directory))
 pa = Paths(args)
@@ -189,6 +192,7 @@ print("Copying GDAL" + pa.gdalHost)
 for item in os.listdir(pa.gdalHost + "/bin"):
     cp.copy(pa.gdalHost + "/bin/" + item, pa.binDir)
 cp.copytree(pa.gdalHost + "/share/gdal", pa.gdalDataDir, symlinks=False)
+cp.copytree(pa.gdalPluginsHost, pa.gdalPluginsDir, symlinks=False)
 subprocess.call(['chmod', '-R', '+w', pa.gdalDataDir])
 
 # normally this should be on MacOS/bin/ so logic in GdalUtils.py works,

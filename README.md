@@ -31,6 +31,9 @@ or use google calendar with [roadmap](https://calendar.google.com/calendar?cid=b
 - Sign out from the apple developer page and app store
 - Open XCode and accept license
 - install homebrew and QGIS deps by running `install_brew.bash`
+- Download MrSID SDK [referenced in](https://github.com/OSGeo/homebrew-osgeo4mac/blob/master/Formula/mrsid-sdk.rb) and place it in the folder `$HOME/Library/Caches/Homebrew`
+- Download erdas-ecw-jp2 [referenced in](https://github.com/OSGeo/homebrew-osgeo4mac/blob/master/Formula/ecwjp2-sdk.rb). Open dmg, open pkg and install to default location (Desktop Read-Only Free type)
+- install homebrew packages by `install_brew_packages.bash`
 - Update `~/.bash_profile` from `scrips/bash_profile`
 - now clone this repository
 - to upload to Dropbox
@@ -47,6 +50,7 @@ or use google calendar with [roadmap](https://calendar.google.com/calendar?cid=b
     - create `sing_identity.txt` with the ID of your identity
     - allow to use it in cronjob (https://stackoverflow.com/a/20324331/2838364)
     - create symbolic link to keychain with the imported identity
+
 - so your folders structure is
 ```
   dropbox_token.txt
