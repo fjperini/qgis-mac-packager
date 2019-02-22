@@ -6,7 +6,7 @@ set -o pipefail
 # GNU General Public License 2 any later version
 
 TAG=master
-QGISAPP="QGIS3.5.app"
+QGISAPP="QGIS3.7.app"
 
 PWD=`pwd`
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"

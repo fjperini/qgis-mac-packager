@@ -1,13 +1,13 @@
-Package contains standalone QGIS installation, with bundled Python, Qt, GDAL and other dependencies.
+Package contains standalone QGIS installation, with bundled Python3, Qt, GDAL, GRASS, SAGA and other dependencies.
 
 Please report any issues on [GitHub issue tracker](https://github.com/lutraconsulting/qgis-mac-packager/issues)
 
-- [Latest Release 3.4.4](https://www.dropbox.com/sh/qcr9a6ry25n4x91/AABQ78LJIlKTCTMRj8H0L3u4a?dl=0)
+- [Long Term Release 3.4.5](https://www.dropbox.com/sh/w43am79lkx716p0/AABJp0sUUCaXTX5MLg41h36oa?dl=0)
+- [Latest Release 3.6.0](https://www.dropbox.com/sh/qcr9a6ry25n4x91/AABQ78LJIlKTCTMRj8H0L3u4a?dl=0)
 - [Nightly Builds (master)](https://www.dropbox.com/sh/cc3615b1zd7ruwz/AACfBDg0GVfdgAt-FGMZiuaba?dl=0)
 
 ## Notes 
 
-- The LTR package will be added 22nd February 2019
 - Minimum supported MacOS version is 10.13 ([details](https://github.com/lutraconsulting/qgis-mac-packager/issues/22))
 - QGIS [must be installed](https://github.com/lutraconsulting/qgis-mac-packager/issues/11) in /Applications/QGIS\<version\>.app
 
@@ -22,6 +22,8 @@ Please report any issues on [GitHub issue tracker](https://github.com/lutraconsu
 - Embeds his own version of Python 3 in the package
 
 ## Build Details
+
+MacOS version is 10.14
 
 Package was built with XCode 10.1 (10B61)
 
@@ -43,6 +45,7 @@ Used Homebrew's packages
 - conan 1.12.2
 - create-dmg 1.0.0.5
 - curl 7.64.0
+- ecwjp2-sdk 5.4.0
 - eigen 3.3.7
 - epsilon 0.9.2
 - exiv2 0.27.0a
@@ -59,6 +62,8 @@ Used Homebrew's packages
 - fribidi 1.0.5
 - gcc 8.2.0
 - gdal2 2.4.0
+- gdal2-ecwjp2 2.4.0
+- gdal2-mrsid 2.4.0
 - gdal2-python 2.4.0
 - gdbm 1.18.1
 - geos 3.7.1_1
@@ -127,6 +132,7 @@ Used Homebrew's packages
 - lzo 2.10
 - matplotlib 2.2.3
 - mpfr 4.0.1
+- mrsid-sdk 9.5.1.4427
 - mysql 8.0.15
 - netcdf 4.6.2
 - nettle 3.4.1
@@ -308,4 +314,4 @@ Used Python3 modules
 - xlwt 1.3.0
 - yaml 3.13
 
-Updated: 2019-02-12 12:07:45
+Updated: 2019-02-22 13:12:21

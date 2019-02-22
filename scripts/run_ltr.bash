@@ -5,8 +5,8 @@ set -o pipefail
 # 2018 Peter Petrik (zilolv at gmail dot com)
 # GNU General Public License 2 any later version
 
-TAG=ltr-3_4
-QGISAPP="QGIS3.x.app"
+TAG=final-3_4_5
+QGISAPP="QGIS3.4.app"
 
 PWD=`pwd`
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
