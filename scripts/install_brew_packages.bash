@@ -81,6 +81,7 @@ brew install osgeo/osgeo4mac/postgis2
 pip3 install dropbox
 pip3 install GitPython
 pip3 install owslib
+brew install wget
 
 # https://github.com/al45tair/dmgbuild/issues/12
 pip install dmgbuild

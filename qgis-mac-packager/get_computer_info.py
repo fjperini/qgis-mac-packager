@@ -6,6 +6,8 @@ import platform
 import os
 import time
 
+THIS_DIR = os.path.dirname(os.path.realpath(__file__))
+
 
 def timestamp():
     ts = time.gmtime()
@@ -74,6 +76,16 @@ def check_py_version(name):
         return ""
 
 
+def projdatumgrid():
+    cmd = os.path.join(THIS_DIR, os.path.pardir, "scripts", "fetch_proj-datumgrid.bash" )
+    try:
+        output = subprocess.check_output([cmd, "-version"], stderr=subprocess.PIPE, encoding='UTF-8')
+        return output.strip()
+    except:
+        print("Unable to detect version for proj-datumgrid")
+        return ""
+
+
 def python_libs():
     exclude = ["dropbox", "__pycache__"]
     libs = {}
@@ -134,6 +146,8 @@ def get_computer_info():
     msg += "Package was built with XCode " + xcode() + "\n\n"
     msg += "Used Homebrew's packages\n\n"
     msg += homebrew_libs() + "\n\n"
+    msg += "Used Proj Datum Grids:\n\n"
+    msg += projdatumgrid() + "\n\n"
     msg += "Used Python3 modules\n\n"
     msg += python_libs() + "\n\n"
     msg += "Updated: " + timestamp()

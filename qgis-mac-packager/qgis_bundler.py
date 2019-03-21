@@ -47,6 +47,9 @@ parser.add_argument('--min_os',
 parser.add_argument('--qgisapp_name',
                     required=True,
                     help='name of resulting qgis application (QGIS.app, QGIS3.4.app, QGIS3.5.app)')
+parser.add_argument('--proj_datumgrids',
+                    required=True,
+                    help='proj-datumgrids shared data directory')
 
 verbose = False
 
@@ -63,6 +66,7 @@ print("APPLE MINOS: "  + str(args.min_os))
 print("QGIS.app name: " + str(args.qgisapp_name))
 args.proj = "/usr/local/opt/proj/share"
 print("PROJ: " + args.proj)
+print("PROJ-DATUMGRIDS: " + args.proj_datumgrids)
 
 args.geotiff = "/usr/local/opt/libgeotiff/share/epsg_csv"
 print("GEOTIFF: " + args.geotiff)
@@ -99,6 +103,10 @@ if not os.path.exists(args.proj + "/proj/proj_def.dat"):
 if not os.path.exists(args.geotiff + "/coordinate_system.csv"):
     raise QGISBundlerError(args.geotiff + " does not contain GEOTIFF shared folder")
 
+if not os.path.exists(args.proj_datumgrids):
+    raise QGISBundlerError(args.proj_datumgrids + " does not exist")
+
+
 class Paths:
     def __init__(self, args):
         # bundler path
@@ -118,6 +126,7 @@ class Paths:
         self.psqlDriverHost = "/usr/local/opt/qpsql/lib/qt/plugins/sqldrivers/libqsqlpsql.dylib"
         self.odbcDriverHost = "/usr/local/opt/qodbc/lib/qt/plugins/sqldrivers/libqsqlodbc.dylib"
         self.projHost = args.proj
+        self.projDatumGridsHost = args.proj_datumgrids
         self.geotiffHost = args.geotiff
 
         # new bundle destinations
@@ -279,6 +288,12 @@ cp.copy("/usr/local/opt/libspatialite/lib/mod_spatialite.7.dylib", os.path.join(
 
 print("Copy PROJ shared folder")
 cp.copytree(pa.projHost, pa.projDir, True)
+for item in os.listdir(pa.projDatumGridsHost):
+    src = pa.projDatumGridsHost + "/" + item
+    dest = pa.projDir + "/" + item
+    if os.path.exists(dest):
+      cp.remove(dest)
+    cp.copy(src, dest)
 
 print("Copy GEOTIFF shared folder")
 cp.copytree(pa.geotiffHost, pa.geotiffDir, True)

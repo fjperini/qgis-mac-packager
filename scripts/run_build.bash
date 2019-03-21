@@ -45,6 +45,7 @@ if true; then
       --gdal /usr/local/opt/gdal2 \
       --saga /usr/local/opt/saga-gis-lts \
       --grass7 /usr/local/opt/grass7/grass-base \
+      --proj_datumgrids $DIR/../../proj-datumgrid/grids \
       --min_os ${MINOS} \
       --qgisapp_name ${QGISAPP}
 fi

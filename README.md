@@ -34,6 +34,7 @@ or use google calendar with [roadmap](https://calendar.google.com/calendar?cid=b
 - Download MrSID SDK [referenced in](https://github.com/OSGeo/homebrew-osgeo4mac/blob/master/Formula/mrsid-sdk.rb) and place it in the folder `$HOME/Library/Caches/Homebrew`
 - Download erdas-ecw-jp2 [referenced in](https://github.com/OSGeo/homebrew-osgeo4mac/blob/master/Formula/ecwjp2-sdk.rb). Open dmg, open pkg and install to default location (Desktop Read-Only Free type)
 - install homebrew packages by `install_brew_packages.bash`
+- get proj datumgrids by running `scripts/fetch_proj-datumgrid.bash`
 - Update `~/.bash_profile` from `scrips/bash_profile`
 - now clone this repository
 - to upload to Dropbox
@@ -58,6 +59,7 @@ or use google calendar with [roadmap](https://calendar.google.com/calendar?cid=b
   qgis.keychain.db --> ~/Library/Keychains/login.keychain-db
   run_cronjob.bash
   qgis-mac-packager/
+  proj-datumgrid/
   builds/
   logs/
 ```
@@ -76,6 +78,7 @@ NOTE: grep for "lutra", since this username is hardcoded in few places around
 - remove all build folders 
 - remove homebrew (`/usr/local/*`)
 - reinstall homebrew packages
+- update version & run `scripts/fetch_proj-datumgrid.bash`
 - update docs/README.md with new set of used libs
 
 # How to release new versions
