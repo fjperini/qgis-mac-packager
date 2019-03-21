@@ -32,8 +32,7 @@ def xcode():
     return "Unknown"
 
 def homebrew_libs():
-    # only gdaL2 from osgeo homebrew should be present
-    force_error =["gdal"]
+    force_error =[]
 
     exclude = ["python@2", "bash-completion"]
     libs = []
