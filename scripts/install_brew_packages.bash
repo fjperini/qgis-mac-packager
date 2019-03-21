@@ -227,3 +227,4 @@ pip3 install traitlets
 pip3 install urllib3
 pip3 install xlrd
 pip3 install xlwt
+pip3 install pillow
