@@ -40,6 +40,7 @@ pip3 install python-dateutil
 pip3 install cython
 pip3 install pyproj
 
+brew cask install java
 brew install osgeo/osgeo4mac/gdal2
 brew link gdal2 --force
 
