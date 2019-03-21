@@ -378,7 +378,9 @@ def test_full_tree_consistency(pa):
         "libjpeg.8.dylib", "libjpeg.9.dylib",
         "libpq.5.10.dylib", "libpq.5.11.dylib",
         "libopenjp2.2.1.0.dylib", "libopenjp2.7.dylib",
-        "libz.1.dylib", "libz.1.2.11.dylib"
+        "libz.1.dylib", "libz.1.2.11.dylib",
+        "libproj.13.dylib", "libproj.15.dylib",
+        "libicudata.63.dylib", "libicudata.63.1.dylib"
     ]
 
     unique_libs = {}
