@@ -766,13 +766,13 @@ if qcaLib in output:
 
 # saga_cmd has hardcoded path to /usr/local to search for the tools and shared folder
 saga_ver = "2.3.2_4"
-if not os.path.exists("/usr/local/Cellar/saga-gis-lts/{}/lib/saga".format(saga_ver)):
+if not os.path.exists("/usr/local/Cellar/osgeo-saga-lts/{}/lib/saga".format(saga_ver)):
     raise QGISBundlerError("Maybe SAGA was updated?")
 
 basePathForLinks = pa.installQgisApp + "/Contents/Resources"
 # we need to replace with the string with same length
-if len(basePathForLinks + "/") < len("/usr/local/Cellar/saga-gis-lts/{}/lib/saga".format(saga_ver)):
-    link_length = len("/usr/local/Cellar/saga-gis-lts/{}/lib/saga".format(saga_ver)) - len(basePathForLinks +  "/")
+if len(basePathForLinks + "/") < len("/usr/local/Cellar/osgeo-saga-lts/{}/lib/saga".format(saga_ver)):
+    link_length = len("/usr/local/Cellar/osgeo-saga-lts/{}/lib/saga".format(saga_ver)) - len(basePathForLinks +  "/")
     sagaLibDir = ""
     sagaLibDir += link_length * "a"
     sagaLibInstall = basePathForLinks + "/" + sagaLibDir
@@ -785,17 +785,17 @@ sagaBin = os.path.join(pa.binDir, "saga_cmd")
 f = open(sagaBin, 'rb+')
 data = f.read()
 # we need to replace same number of bytes to not breakup the lib
-if len("/usr/local/Cellar/saga-gis-lts/{}/lib/saga".format(saga_ver)) != len(sagaLibInstall):
+if len("/usr/local/Cellar/osgeo-saga-lts/{}/lib/saga".format(saga_ver)) != len(sagaLibInstall):
     raise QGISBundlerError("bad length  " + sagaLibInstall)
-data=data.replace(bytes("/usr/local/Cellar/saga-gis-lts/{}/lib/saga".format(saga_ver), "utf-8"),
+data=data.replace(bytes("/usr/local/Cellar/osgeo-saga-lts/{}/lib/saga".format(saga_ver), "utf-8"),
                   bytes(sagaLibInstall, "utf-8"))
 f.seek(0)
 f.write(data)
 f.close()
 
 # we need to replace with the string with same length
-if len(basePathForLinks + "/") < len("/usr/local/Cellar/saga-gis-lts/{}/share/saga".format(saga_ver)):
-    link_length = len("/usr/local/Cellar/saga-gis-lts/{}/share/saga".format(saga_ver)) - len(basePathForLinks + "/" )
+if len(basePathForLinks + "/") < len("/usr/local/Cellar/osgeo-saga-lts/{}/share/saga".format(saga_ver)):
+    link_length = len("/usr/local/Cellar/osgeo-saga-lts/{}/share/saga".format(saga_ver)) - len(basePathForLinks + "/" )
     sagaShareDir = ""
     sagaShareDir += link_length * "b"
     sagaShareInstall = basePathForLinks + "/" + sagaShareDir
@@ -806,16 +806,16 @@ else:
 
 f = open(sagaBin, 'rb+')
 data = f.read()
-if len("/usr/local/Cellar/saga-gis-lts/{}/share/saga".format(saga_ver)) != len(sagaShareInstall):
+if len("/usr/local/Cellar/osgeo-saga-lts/{}/share/saga".format(saga_ver)) != len(sagaShareInstall):
     raise QGISBundlerError("bad length  " + sagaShareInstall)
-data=data.replace(bytes("/usr/local/Cellar/saga-gis-lts/{}/share/saga".format(saga_ver), "utf-8"),
+data=data.replace(bytes("/usr/local/Cellar/osgeo-saga-lts/{}/share/saga".format(saga_ver), "utf-8"),
                   bytes(sagaShareInstall, "utf-8"))
 f.seek(0)
 f.write(data)
 f.close()
 
 output = subprocess.check_output(["strings", sagaBin], encoding='UTF-8')
-if "saga-gis-lts" in output:
+if "osgeo-saga-lts" in output:
     raise QGISBundlerError("Failed to patch " + sagaBin)
 
 # unlink in lib/saga because here SAGA_MLB variable points in QGIS SAGA processing script
