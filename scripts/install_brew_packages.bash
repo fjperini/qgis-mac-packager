@@ -44,7 +44,7 @@ CFLAGS='-std=c99' pip3 install git+https://github.com/jswhit/pyproj.git
 # make sure you do not install homebrew-core/gdal since it
 # does not support netcdf
 # also do not use bottle since it does not have netcdf too!
-brew install osgeo/osgeo4mac/gdal2 --build-bottle --with-complete --with-libkml
+brew install osgeo/osgeo4mac/gdal2 --build-bottle --with-complete --with-libkml --with-postgresql
 brew link gdal2 --force
 
 brew install openvpn
