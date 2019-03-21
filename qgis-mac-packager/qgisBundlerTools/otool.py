@@ -49,6 +49,8 @@ def binary_type(lib_path):
         lib_path = lib_path.replace("/DLC/psycopg2/", "/usr/local/lib/python3.7/site-packages/psycopg2/.dylibs/")
     if "/DLC/PIL/" in lib_path:
         lib_path = lib_path.replace("/DLC/PIL/", "/usr/local//lib/python3.7/site-packages/PIL/.dylibs/")
+    if "/DLC/pyproj/" in lib_path:
+        lib_path = lib_path.replace("/DLC/pyproj/", "/usr/local/lib/python3.7/site-packages/pyproj/.dylibs/")
 
     # note "/opt/X11" comes from XQuarz and it has ALREADY signed X libraries
     if lib_path.startswith("/usr/lib/") or lib_path.startswith("/System/Library/"):
