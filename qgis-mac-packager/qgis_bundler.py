@@ -765,7 +765,7 @@ if qcaLib in output:
     raise QGISBundlerError("Failed to patch " + qcaLib)
 
 # saga_cmd has hardcoded path to /usr/local to search for the tools and shared folder
-saga_ver = "2.3.2_4"
+saga_ver = "2.3.2_1"
 if not os.path.exists("/usr/local/Cellar/osgeo-saga-lts/{}/lib/saga".format(saga_ver)):
     raise QGISBundlerError("Maybe SAGA was updated?")
 
