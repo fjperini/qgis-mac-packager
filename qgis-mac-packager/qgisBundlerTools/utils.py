@@ -66,6 +66,9 @@ def resolve_libpath(pa, lib_path):
         elif os.path.exists("/usr/local/opt/opencv@2/lib" + lib_path.replace("@loader_path", "")):
             # opencv@2 is not in /usr/local/lib
             lib_path = "/usr/local/opt/opencv@2/lib" + lib_path.replace("@loader_path", "")
+        elif os.path.exists("/usr/local/opt/icu4c/lib/" + lib_path.replace("@loader_path", "")):
+            # icu4c is not in /usr/local/lib
+            lib_path = "/usr/local/opt/icu4c/lib/" + lib_path.replace("@loader_path", "")
         else:
             # workarounds. Some python packages have bundled their libraries
             # but the libraries are in different version than the libraries
