@@ -36,10 +36,9 @@ brew install osgeo/osgeo4mac/qodbc
 brew install osgeo/osgeo4mac/qpsql
 brew install pyqt
 
-# pyproj has bug for python3, unable to install from pip3
 pip3 install python-dateutil
 pip3 install cython
-CFLAGS='-std=c99' pip3 install git+https://github.com/jswhit/pyproj.git
+pip3 install pyproj
 
 # make sure you do not install homebrew-core/gdal since it
 # does not support netcdf
