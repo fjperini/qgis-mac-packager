@@ -199,6 +199,7 @@ def patch_sqlite(pa):
 
 def patch_text_files(pa):
     # First patch GRASS7 shell script
+    grass_ver = "osgeo-grass/7.6.0_1"
     grass7file = pa.grass7Dir + "/bin/grass76"
     toreplace = """
     export PYTHONHOME=XXX/Contents/Frameworks/Python.framework/Versions/Current
@@ -210,20 +211,20 @@ $GRASS_PYTHON XXX/Contents/Resources/grass7/bin/_grass76 $@
     _patch_file(pa,
                 grass7file,
                 "MANPATH",
-                "GRASS_PYTHON=python2 exec /usr/local/Cellar/grass7/7.6.0_2/libexec/bin/grass76",
+                "GRASS_PYTHON=python2 exec /usr/local/Cellar/" +grass_ver+ "/libexec/bin/grass76",
                 toreplace)
 
     # now crowl and replace in all other files
     replacements = [
-        "/usr/local/Cellar/grass7/7.6.0_2/grass-base" + "~~>" + pa.grass7Install,
-        "/usr/local/Cellar/grass7/7.6.0_2/grass-7.6.0" + "~~>" + pa.grass7Install,
+        "/usr/local/Cellar/" +grass_ver+ "/grass-base" + "~~>" + pa.grass7Install,
+        "/usr/local/Cellar/" +grass_ver+ "/grass-7.6.0" + "~~>" + pa.grass7Install,
         pa.projHost + "~~>" + pa.projShareInstall,
-        "/usr/local/Cellar/grass7/7.6.0_2/grass-7.6.0/lib" + "~~>" + pa.installQgisLib,
+        "/usr/local/Cellar/" +grass_ver+ "/grass-7.6.0/lib" + "~~>" + pa.installQgisLib,
         "/usr/local/opt/proj/lib" + "~~>" + pa.installQgisLib,
         pa.geotiffHost + "~~>" + pa.geotiffShareInstall,
         "/usr/local/opt/gdal2/share/gdal" + "~~>" + pa.gdalShareInstall,
         "=python2 " + "~~>" + "=" + pa.installQgisApp + "/Contents/MacOS/bin/python ",
-        "/usr/local/Cellar/grass7/7.6.0_2/libexec/bin/grass76" + "~~>" + pa.grass7Install + "/bin/_grass76",
+        "/usr/local/Cellar/" +grass_ver+ "/libexec/bin/grass76" + "~~>" + pa.grass7Install + "/bin/_grass76",
         "/usr/local/opt/openblas/lib" + "~~>" + pa.installQgisLib,
         "/usr/local/lib" + "~~>" + pa.installQgisLib,
         # "/usr/local" + "~~>" + pa.installQgisApp
