@@ -369,11 +369,15 @@ def test_full_tree_consistency(pa):
     # 2.0 and 2.1 already in /usr/local/Cellar/pyqt/5.10.1_1/lib/python3.7/site-packages/PyQt5/
 
     # PQ: used by saga
+
+    # libz and libopenjp2 : PIL (pillow) dep
     exceptions = [
         "_QOpenGLFunctions_2_0.so", "_QOpenGLFunctions_2_1.so",
         "libhdf5.101.dylib", "libhdf5.103.dylib",
         "libjpeg.8.dylib", "libjpeg.9.dylib",
-        "libpq.5.10.dylib", "libpq.5.11.dylib"
+        "libpq.5.10.dylib", "libpq.5.11.dylib",
+        "libopenjp2.2.1.0.dylib", "libopenjp2.7.dylib",
+        "libz.1.dylib", "libz.1.2.11.dylib"
     ]
 
     unique_libs = {}

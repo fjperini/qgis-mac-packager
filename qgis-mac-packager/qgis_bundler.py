@@ -290,7 +290,7 @@ print("Copy PROJ shared folder")
 cp.copytree(pa.projHost, pa.projDir, True)
 for item in os.listdir(pa.projDatumGridsHost):
     src = pa.projDatumGridsHost + "/" + item
-    dest = pa.projDir + "/" + item
+    dest = pa.projDir + "/proj/" + item
     if os.path.exists(dest):
       cp.remove(dest)
     cp.copy(src, dest)
