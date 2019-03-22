@@ -29,7 +29,6 @@ brew install python
 
 # qt
 brew install osgeo-sip
-brew unlink sip
 brew link osgeo-sip
 
 brew install qt
