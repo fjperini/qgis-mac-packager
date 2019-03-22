@@ -229,11 +229,11 @@ Used Homebrew's packages
 
 Used Proj Datum Grids:
 
-proj-datumgrid-world-1.0
-proj-datumgrid-europe-1.2
-proj-datumgrid-oceania-1.0
-proj-datumgrid-north-america-1.2
-proj-datumgrid-1.8
+- proj-datumgrid-world-1.0
+- proj-datumgrid-europe-1.2
+- proj-datumgrid-oceania-1.0
+- proj-datumgrid-north-america-1.2
+- proj-datumgrid-1.8
 
 Used Python3 modules
 

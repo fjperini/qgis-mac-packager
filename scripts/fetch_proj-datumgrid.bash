@@ -21,11 +21,11 @@ NORTH_AMERICA="https://github.com/OSGeo/proj-datumgrid/releases/download/$NORTH_
 MAIN="https://github.com/OSGeo/proj-datumgrid/releases/download/$MAIN_VER/proj-datumgrid-$MAIN_VER.tar.gz"
 
 if (( $# == 1 )); then
-    echo "proj-datumgrid-$WORLD_VER"
-    echo "proj-datumgrid-$EUROPE_VER"
-    echo "proj-datumgrid-$OCEANIA_VER"
-    echo "proj-datumgrid-$NORTH_AMERICA_VER"
-    echo "proj-datumgrid-$MAIN_VER"
+    echo "- proj-datumgrid-$WORLD_VER"
+    echo "- proj-datumgrid-$EUROPE_VER"
+    echo "- proj-datumgrid-$OCEANIA_VER"
+    echo "- proj-datumgrid-$NORTH_AMERICA_VER"
+    echo "- proj-datumgrid-$MAIN_VER"
     exit 0
 fi
 
