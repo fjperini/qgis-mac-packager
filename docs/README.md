@@ -20,6 +20,7 @@ Please report any issues on [GitHub issue tracker](https://github.com/lutraconsu
 - Allows installation of different versions side-by-side
 - Transparent server setup, all scripts/docs can be found [here](https://github.com/lutraconsulting/qgis-mac-packager)
 - Embeds his own version of Python 3 in the package
+- Embeds all Proj's datumgrids 
 
 ## Build Details
 
