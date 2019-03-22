@@ -197,7 +197,6 @@ Used Homebrew's packages
 - scipy 1.2.1
 - sdl2 2.0.9
 - sfcgal 1.3.6_1
-- osgeo-sip 4.19.8_10
 - snappy 1.1.7_1
 - spatialindex 1.9.0
 - speex 1.2.0
