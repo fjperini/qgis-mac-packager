@@ -49,6 +49,7 @@ def patch_info_plist(pa, min_os):
     add_grass7_folder = True
     add_qgis_prefix = True
     add_gdal_paths = True
+    add_proj_path = True
     add_quarantine = True
     patchCFBundleIdentifier = True
     patchBundleName = False
@@ -173,6 +174,16 @@ def patch_info_plist(pa, min_os):
                                "\t\t<key>QT_AUTO_SCREEN_SCALE_FACTOR</key>",
                                "\t\t<key>GDAL_DATA</key>\n" +
                                "\t\t<string>{}</string>\n".format(pa.gdalShareInstall) +
+                               "\t\t<key>QT_AUTO_SCREEN_SCALE_FACTOR</key>"
+                               )
+
+    # fix PROJ paths
+    if add_proj_path:
+        _patch_file(pa, infoplist,
+                               "PROJ_LIB",
+                               "\t\t<key>QT_AUTO_SCREEN_SCALE_FACTOR</key>",
+                               "\t\t<key>PROJ_LIB</key>\n" +
+                               "\t\t<string>{}/Resources/proj/proj</string>\n".format(destContents) +
                                "\t\t<key>QT_AUTO_SCREEN_SCALE_FACTOR</key>"
                                )
 
