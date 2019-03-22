@@ -105,7 +105,7 @@ print("STEP 3: Generate CMAKE build system")
 print(100*"*")
 os.chdir(buildDir)
 
-prefix_path = "/usr/local/opt/qt;/usr/local/opt/qt5-webkit;/usr/local/opt/qscintilla2;/usr/local/opt/qwt;/usr/local/opt/qwtpolar;"
+prefix_path = "/usr/local/opt/qt;/usr/local/opt/qt5-webkit;/usr/local/opt/osgeo-qscintilla2;/usr/local/opt/qwt;/usr/local/opt/qwtpolar;"
 prefix_path += "/usr/local/opt/qca;/usr/local/opt/gdal2;/usr/local/opt/gsl;/usr/local/opt/geos;/usr/local/opt/proj;"
 prefix_path += "/usr/local/opt/libspatialite;/usr/local/opt/spatialindex;/usr/local/opt/fcgi;/usr/local/opt/expat;"
 prefix_path += "/usr/local/opt/sqlite;/usr/local/opt/flex;/usr/local/opt/bison;/usr/local/opt/libzip;"
