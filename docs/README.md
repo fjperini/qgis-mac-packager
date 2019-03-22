@@ -6,7 +6,7 @@ Please report any issues on [GitHub issue tracker](https://github.com/lutraconsu
 - [Latest Release 3.6.0](https://www.dropbox.com/sh/qcr9a6ry25n4x91/AABQ78LJIlKTCTMRj8H0L3u4a?dl=0)
 - [Nightly Builds (master)](https://www.dropbox.com/sh/cc3615b1zd7ruwz/AACfBDg0GVfdgAt-FGMZiuaba?dl=0)
 
-## Notes 
+## Notes
 
 - Minimum supported MacOS version is 10.13 ([details](https://github.com/lutraconsulting/qgis-mac-packager/issues/22))
 - QGIS [must be installed](https://github.com/lutraconsulting/qgis-mac-packager/issues/11) in /Applications/QGIS\<version\>.app
@@ -20,7 +20,7 @@ Please report any issues on [GitHub issue tracker](https://github.com/lutraconsu
 - Allows installation of different versions side-by-side
 - Transparent server setup, all scripts/docs can be found [here](https://github.com/lutraconsulting/qgis-mac-packager)
 - Embeds his own version of Python 3 in the package
-- Embeds all Proj's datumgrids 
+- Embeds all Proj's datumgrids
 
 ## Build Details
 
@@ -153,18 +153,18 @@ Used Homebrew's packages
 - osgeo-libkml 1.3_1
 - osgeo-liblas 1.8.1_3
 - osgeo-mrsid-sdk 9.5.1.4427
-- osgeo-postgis 2.5.2_1
-- osgeo-pyqt 5.12
-- osgeo-pyqt-webkit 5.12_1
+- osgeo-postgis 2.5.2_4
+- osgeo-pyqt 5.12.1
+- osgeo-pyqt-webkit 5.12.1
 - osgeo-pyspatialite 3.0.1_1
-- osgeo-qscintilla2 2.11.1_1
-- osgeo-qt-mysql 5.12.1_1
-- osgeo-qt-odbc 5.12.1_1
-- osgeo-qt-psql 5.12.1_1
-- osgeo-qt-webkit 5.12.1_1
+- osgeo-qscintilla2 2.11.1_2
+- osgeo-qt-mysql 5.12.2
+- osgeo-qt-odbc 5.12.2
+- osgeo-qt-psql 5.12.2
+- osgeo-qt-webkit 5.12.2
 - osgeo-qtkeychain 0.9.1_1
 - osgeo-saga-lts 2.3.2_1
-- osgeo-sip 4.19.14_1
+- osgeo-sip 4.19.15
 - p11-kit 0.23.15
 - pango 1.42.4_1
 - pcre 8.43
@@ -182,7 +182,6 @@ Used Homebrew's packages
 - py3cairo 1.18.0
 - pygobject 2.28.7_1
 - pygobject3 3.32.0
-- pyqt 5.10.1_1
 - python 3.7.2_2
 - qca 2.1.3_2
 - qhull 2015.2
@@ -198,7 +197,7 @@ Used Homebrew's packages
 - scipy 1.2.1
 - sdl2 2.0.9
 - sfcgal 1.3.6_1
-- sip 4.19.8_10
+- osgeo-sip 4.19.8_10
 - snappy 1.1.7_1
 - spatialindex 1.9.0
 - speex 1.2.0
@@ -247,16 +246,16 @@ Used Python3 modules
 - OpenSSL 19.0.0
 - PIL 5.4.1
 - Pillow 5.4.1
-- PyQt5 
+- PyQt5
 - PyYAML 5.1
 - Pygments 2.3.1
 - Pypubsub 4.0.3
 - Shapely 1.6.4.post2
-- _plotly_utils 
+- _plotly_utils
 - asn1crypto 0.24.0
 - attr 19.1.0**
 - attrs 19.1.0
-- cairo 
+- cairo
 - certifi 2019.3.9
 - cffi 1.12.2
 - chardet 3.0.4
@@ -268,7 +267,7 @@ Used Python3 modules
 - exifread 2.1.2
 - funcsigs 1.0.2
 - future 0.17.1
-- geos 
+- geos
 - gi 3.32.0
 - git 2.1.11
 - gitdb 2.0.5
@@ -280,13 +279,13 @@ Used Python3 modules
 - jinja2 2.10
 - jsonschema 3.0.1
 - jupyter_core 4.4.0
-- libfuturize 
-- libpasteurize 
+- libfuturize
+- libpasteurize
 - lxml 4.3.2
 - markupsafe 1.1.1
 - matplotlib 2.2.3
 - mock 2.0.0
-- mpl_toolkits 
+- mpl_toolkits
 - nbformat 4.4.0
 - networkx 2.2
 - nose2 0.9.0
@@ -299,9 +298,9 @@ Used Python3 modules
 - past 0.17.1
 - pbr 5.1.3
 - pip 19.0.2
-- pkg_resources 
+- pkg_resources
 - plotly 3.7.1
-- plotlywidget 
+- plotlywidget
 - ply 3.11
 - psycopg2 2.7.7
 - pubsub 4.0.3
@@ -309,7 +308,7 @@ Used Python3 modules
 - pycairo 1.18.0
 - pycparser 2.19
 - pygments 2.3.1
-- pygtkcompat 
+- pygtkcompat
 - pyodbc 4.0.26
 - pyproj 2.1.1
 - pyrsistent 0.14.11
@@ -317,11 +316,11 @@ Used Python3 modules
 - python_dateutil 2.8.0
 - pytils 0.3
 - pytz 2018.9
-- pyximport 
+- pyximport
 - requests 2.21.0
 - retrying 1.3.3
 - scipy 1.2.1
-- script 
+- script
 - seaborn 0.9.0
 - setuptools 40.8.0
 - shapely 1.6.4.post2

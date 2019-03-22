@@ -33,10 +33,10 @@ brew link osgeo-sip
 
 brew install qt
 brew install qjson
-brew install osgeo/osgeo4mac/qt5-webkit
-brew install osgeo/osgeo4mac/qmysql
-brew install osgeo/osgeo4mac/qodbc
-brew install osgeo/osgeo4mac/qpsql
+brew install osgeo/osgeo4mac/osgeo-qt-webkit
+brew install osgeo/osgeo4mac/osgeo-qt-mysql
+brew install osgeo/osgeo4mac/osgeo-qt-odbc
+brew install osgeo/osgeo4mac/osgeo-qt-psql
 brew install osgeo/osgeo4mac/osgeo-pyqt
 brew link osgeo-pyqt
 brew install osgeo/osgeo4mac/osgeo-pyqt-webkit
@@ -46,8 +46,8 @@ pip3 install cython
 pip3 install pyproj
 
 brew cask install java
-brew install osgeo/osgeo4mac/gdal2
-brew link gdal2 --force
+brew install osgeo/osgeo4mac/osgeo-gdal
+brew link osgeo-gdal --force
 
 brew install openvpn
 brew install szip
@@ -59,25 +59,25 @@ brew install gsl
 brew install exiv2
 
 # https://github.com/OSGeo/homebrew-osgeo4mac/issues/529
-# brew install saga-gis-lts --build-bottle
+# brew install osgeo-saga-lts --build-bottle
 # should be fixed with https://github.com/OSGeo/homebrew-osgeo4mac/commit/6e1ee285d8619e4d10bbe3ab34b4934f158baf28
-brew install osgeo/osgeo4mac/saga-gis-lts
+brew install osgeo/osgeo4mac/osgeo-saga-lts
 
-brew install gdal2-python
+brew install osgeo-gdal-python
 
 # https://github.com/lutraconsulting/qgis-mac-packager/issues/45
 brew install osgeo/osgeo4mac/mrsid-sdk
-brew install osgeo/osgeo4mac/gdal2-mrsid
+brew install osgeo/osgeo4mac/osgeo-gdal-mrsid
 
 # https://github.com/lutraconsulting/qgis-mac-packager/issues/59
 brew install osgeo/osgeo4mac/ecwjp2-sdk
-brew install osgeo/osgeo4mac/gdal2-ecwjp2
+brew install osgeo/osgeo4mac/osgeo-gdal-ecwjp2
 
 # use this link until postgis is build on osgeo
 # POSTGIS_FORMULA=https://raw.githubusercontent.com/OSGeo/homebrew-osgeo4mac/530a838c9d93721d0c2d5eee2ddeb702b848184f/Formula/postgis.rb
 # brew install $POSTGIS_FORMULA --build-bottle --build-from-source
 # should be fixed with https://github.com/OSGeo/homebrew-osgeo4mac/commit/afbffb335d7f4f39bc7d0ac224655871f18c91de
-brew install osgeo/osgeo4mac/postgis2
+brew install osgeo/osgeo4mac/osgeo-postgis
 brew install osgeo/osgeo4mac/osgeo-qscintilla2
 brew install osgeo/osgeo4mac/osgeo-qtkeychain
 
@@ -118,18 +118,18 @@ brew install gnu-sed
 
 # matplotlib
 brew install numpy
-brew install brewsci/bio/matplotlib
+brew install osgeo-matplotlib
 
 # core providers
-brew install gdal2-python
+brew install osgeo-gdal-python
 
 # brew install oracle-client-sdk
-brew cask install XQuartz # requirement of grass7
-brew install grass7
+brew cask install XQuartz # requirement of osgeo-grass
+brew install osgeo-grass
 
 brew install gettext
 
-#/usr/local/opt/grass7/grass-base/include/grass/glocale.h:9:10: fatal error: 'libintl.h' file not found
+#/usr/local/opt/osgeo-grass/grass-base/include/grass/glocale.h:9:10: fatal error: 'libintl.h' file not found
 brew link gettext --force
 
 brew install gpsbabel

@@ -24,7 +24,7 @@ parser.add_argument('--python',
                     help='directory with python framework to bundle, something like /usr/local/Cellar/python/3.7.0/Frameworks/Python.framework/Versions/3.7/Python')
 parser.add_argument('--pyqt',
                     required=True,
-                    help='directory with pyqt packages to bundle, something like /usr/local/Cellar/pyqt/5.10.1_1/lib/python3.7/site-packages/PyQt5')
+                    help='directory with pyqt packages to bundle, something like /usr/local/Cellar/osgeo-pyqt/5.12.1/lib/python3.7/site-packages/PyQt5')
 parser.add_argument('--gdal',
                     required=True,
                     help='gdal installation directory')
@@ -122,9 +122,9 @@ class Paths:
         self.sagaHost = os.path.realpath(args.saga)
         self.grass7Host = os.path.realpath(args.grass7)
         self.gdalPluginsHost = "/usr/local/lib/gdalplugins"
-        self.mysqlDriverHost = "/usr/local/opt/qmysql/lib/qt/plugins/sqldrivers/libqsqlmysql.dylib"
-        self.psqlDriverHost = "/usr/local/opt/qpsql/lib/qt/plugins/sqldrivers/libqsqlpsql.dylib"
-        self.odbcDriverHost = "/usr/local/opt/qodbc/lib/qt/plugins/sqldrivers/libqsqlodbc.dylib"
+        self.mysqlDriverHost = "/usr/local/opt/osgeo-qt-mysql/lib/qt/plugins/sqldrivers/libqsqlmysql.dylib"
+        self.psqlDriverHost = "/usr/local/opt/osgeo-qt-psql/lib/qt/plugins/sqldrivers/libqsqlpsql.dylib"
+        self.odbcDriverHost = "/usr/local/opt/osgeo-qt-odbc/lib/qt/plugins/sqldrivers/libqsqlodbc.dylib"
         self.projHost = args.proj
         self.projDatumGridsHost = args.proj_datumgrids
         self.geotiffHost = args.geotiff

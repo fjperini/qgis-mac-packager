@@ -105,17 +105,17 @@ print("STEP 3: Generate CMAKE build system")
 print(100*"*")
 os.chdir(buildDir)
 
-prefix_path = "/usr/local/opt/qt;/usr/local/opt/qt5-webkit;/usr/local/opt/osgeo-qscintilla2;/usr/local/opt/qwt;/usr/local/opt/qwtpolar;"
-prefix_path += "/usr/local/opt/qca;/usr/local/opt/gdal2;/usr/local/opt/gsl;/usr/local/opt/geos;/usr/local/opt/proj;"
+prefix_path = "/usr/local/opt/qt;/usr/local/opt/osgeo-qt-webkit;/usr/local/opt/osgeo-qscintilla2;/usr/local/opt/qwt;/usr/local/opt/qwtpolar;"
+prefix_path += "/usr/local/opt/qca;/usr/local/opt/osgeo-gdal;/usr/local/opt/gsl;/usr/local/opt/geos;/usr/local/opt/proj;"
 prefix_path += "/usr/local/opt/libspatialite;/usr/local/opt/spatialindex;/usr/local/opt/fcgi;/usr/local/opt/expat;"
 prefix_path += "/usr/local/opt/sqlite;/usr/local/opt/flex;/usr/local/opt/bison;/usr/local/opt/libzip;"
-prefix_path += "/usr/local/opt/libtasn1;/usr/local/opt/grass7"
+prefix_path += "/usr/local/opt/libtasn1;/usr/local/opt/osgeo-grass"
 
 for path in prefix_path.split(";"):
     if not os.path.exists(path):
         raise QGISBuildError("Missing " + path)
 
-grass7_prefix = "/usr/local/opt/grass7/grass-base"
+grass7_prefix = "/usr/local/opt/osgeo-grass/grass-base"
 if not os.path.exists(grass7_prefix):
     raise QGISBuildError("Missing " + grass7_prefix)
 

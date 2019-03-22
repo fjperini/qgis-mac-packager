@@ -41,10 +41,10 @@ if true; then
       --qgis_install_tree $BUILD_DIR/install  \
       --output_directory $BUILD_DIR/bundle  \
       --python /usr/local/opt/python3/Frameworks/Python.framework/Versions/3.7/Python \
-      --pyqt /usr/local/opt/pyqt5/lib/python3.7/site-packages/PyQt5 \
-      --gdal /usr/local/opt/gdal2 \
-      --saga /usr/local/opt/saga-gis-lts \
-      --grass7 /usr/local/opt/grass7/grass-base \
+      --pyqt /usr/local/opt/osgeo-pyqt/lib/python3.7/site-packages/PyQt5 \
+      --gdal /usr/local/opt/osgeo-gdal \
+      --saga /usr/local/opt/osgeo-saga-lts \
+      --grass7 /usr/local/opt/osgeo-grass/grass-base \
       --proj_datumgrids $DIR/../../proj-datumgrid/grids \
       --min_os ${MINOS} \
       --qgisapp_name ${QGISAPP}

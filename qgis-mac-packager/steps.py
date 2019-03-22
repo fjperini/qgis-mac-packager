@@ -369,7 +369,7 @@ def test_full_tree_consistency(pa):
     # jpeg.9 is /usr/local/Cellar/jpeg/9c/lib/libjpeg.9.dylib
     # required by others
     # jpeg.8 is /usr/local/Cellar/jpeg-turbo/2.0.0/lib/libjpeg.8.dylib
-    # required by /osgeo4mac/qt5-webkit
+    # required by /osgeo4mac/osgeo-qt-webkit
 
     # hdf5
     # /usr/local/Cellar//hdf5/1.10.4/lib/libhdf5.103.dylib
@@ -378,7 +378,7 @@ def test_full_tree_consistency(pa):
     # required by h5py
 
     # QOpenGLFunctions
-    # 2.0 and 2.1 already in /usr/local/Cellar/pyqt/5.10.1_1/lib/python3.7/site-packages/PyQt5/
+    # 2.0 and 2.1 already in /usr/local/Cellar/osgeo-pyqt/5.10.1_1/lib/python3.7/site-packages/osgeo-pyqt/
 
     # PQ: used by saga
 
