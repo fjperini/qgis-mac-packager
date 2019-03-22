@@ -233,7 +233,7 @@ $GRASS_PYTHON XXX/Contents/Resources/grass7/bin/_grass76 $@
         "/usr/local/Cellar/" +grass_ver+ "/grass-7.6.0/lib" + "~~>" + pa.installQgisLib,
         "/usr/local/opt/proj/lib" + "~~>" + pa.installQgisLib,
         pa.geotiffHost + "~~>" + pa.geotiffShareInstall,
-        "/usr/local/opt/gdal2/share/gdal" + "~~>" + pa.gdalShareInstall,
+        "/usr/local/opt/osgeo-gdal/share/gdal" + "~~>" + pa.gdalShareInstall,
         "=python2 " + "~~>" + "=" + pa.installQgisApp + "/Contents/MacOS/bin/python ",
         "/usr/local/Cellar/" +grass_ver+ "/libexec/bin/grass76" + "~~>" + pa.grass7Install + "/bin/_grass76",
         "/usr/local/opt/openblas/lib" + "~~>" + pa.installQgisLib,
