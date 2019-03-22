@@ -21,13 +21,17 @@ brew install git
 brew install cmake
 brew install ninja
 brew install gsl
-brew install sip
+
 brew install bison
 brew install flex
 brew install pkg-config
 brew install python
 
 # qt
+brew install osgeo-sip
+brew unlink sip
+brew link osgeo-sip
+
 brew install qt
 brew install qjson
 brew install osgeo/osgeo4mac/qt5-webkit
