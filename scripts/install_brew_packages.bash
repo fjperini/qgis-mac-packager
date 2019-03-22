@@ -34,7 +34,9 @@ brew install osgeo/osgeo4mac/qt5-webkit
 brew install osgeo/osgeo4mac/qmysql
 brew install osgeo/osgeo4mac/qodbc
 brew install osgeo/osgeo4mac/qpsql
-brew install pyqt
+brew install osgeo/osgeo4mac/osgeo-pyqt
+brew link osgeo-pyqt
+brew install osgeo/osgeo4mac/osgeo-pyqt-webkit
 
 pip3 install python-dateutil
 pip3 install cython
@@ -73,6 +75,8 @@ brew install osgeo/osgeo4mac/gdal2-ecwjp2
 # brew install $POSTGIS_FORMULA --build-bottle --build-from-source
 # should be fixed with https://github.com/OSGeo/homebrew-osgeo4mac/commit/afbffb335d7f4f39bc7d0ac224655871f18c91de
 brew install osgeo/osgeo4mac/postgis2
+brew install osgeo/osgeo4mac/osgeo-qscintilla2
+brew install osgeo/osgeo4mac/osgeo-qtkeychain
 
 # tools
 pip3 install dropbox
@@ -87,11 +91,9 @@ pip install dmgbuild
 # brew install osgeo/osgeo4mac/qgis3 --only-dependencies
 # qgis install it brings homebrew-core/gdal dependency back
 
-brew install pyqt5-webkit
 # brew install x11
 brew install qca
-brew install qtkeychain
-brew install qscintilla2
+
 brew install qwt
 brew install qwtpolar
 brew install sqlite

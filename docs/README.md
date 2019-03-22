@@ -157,10 +157,12 @@ Used Homebrew's packages
 - osgeo-pyqt 5.12
 - osgeo-pyqt-webkit 5.12_1
 - osgeo-pyspatialite 3.0.1_1
+- osgeo-qscintilla2 2.11.1_1
 - osgeo-qt-mysql 5.12.1_1
 - osgeo-qt-odbc 5.12.1_1
 - osgeo-qt-psql 5.12.1_1
 - osgeo-qt-webkit 5.12.1_1
+- osgeo-qtkeychain 0.9.1_1
 - osgeo-saga-lts 2.3.2_1
 - osgeo-sip 4.19.14_1
 - p11-kit 0.23.15
@@ -185,9 +187,7 @@ Used Homebrew's packages
 - qca 2.1.3_2
 - qhull 2015.2
 - qjson 0.9.0_1
-- qscintilla2 2.10.4_1
 - qt 5.12.2
-- qtkeychain 0.9.1
 - qwt 6.1.3_4
 - qwtpolar 1.1.1_3
 - r 3.5.3
@@ -254,7 +254,7 @@ Used Python3 modules
 - Shapely 1.6.4.post2
 - _plotly_utils 
 - asn1crypto 0.24.0
-- attr 19.1.0
+- attr 19.1.0**
 - attrs 19.1.0
 - cairo 
 - certifi 2019.3.9
@@ -339,4 +339,4 @@ Used Python3 modules
 - xlwt 1.3.0
 - yaml 5.1
 
-Updated: 2019-03-21 15:49:10
+Updated: 2019-03-22 08:03:22
