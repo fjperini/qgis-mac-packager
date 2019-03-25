@@ -40,7 +40,7 @@ brew install osgeo/osgeo4mac/qpsql
 brew install osgeo/osgeo4mac/osgeo-pyqt
 brew link osgeo-pyqt
 brew install osgeo/osgeo4mac/osgeo-pyqt-webkit
-brew link osgeo-pyqt-webkit
+brew link osgeo-pyqt-webkit --force
 
 pip3 install python-dateutil
 pip3 install cython
