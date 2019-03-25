@@ -87,6 +87,7 @@ pip3 install dropbox
 pip3 install GitPython
 pip3 install owslib
 brew install wget
+brew install bash-completion
 
 # https://github.com/al45tair/dmgbuild/issues/12
 pip install dmgbuild
