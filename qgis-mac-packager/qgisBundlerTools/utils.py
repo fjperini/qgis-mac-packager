@@ -160,4 +160,3 @@ class CopyUtils:
                 self.remove(src)
             else:
                 self.rmtree(src)
-

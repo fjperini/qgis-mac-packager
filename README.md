@@ -31,7 +31,7 @@ or use google calendar with [roadmap](https://calendar.google.com/calendar?cid=b
 - Sign out from the apple developer page and app store
 - Open XCode and accept license
 - install homebrew and QGIS deps by running `install_brew.bash`
-- Download MrSID SDK [referenced in](https://github.com/OSGeo/homebrew-osgeo4mac/blob/master/Formula/mrsid-sdk.rb) and place it in the folder `$HOME/Library/Caches/Homebrew`
+- Download MrSID SDK [referenced in](https://github.com/OSGeo/homebrew-osgeo4mac/blob/master/Formula/osgeo-mrsid-sdk.rb) and place it in the folder `$HOME/Library/Caches/Homebrew`
 - Download erdas-ecw-jp2 [referenced in](https://github.com/OSGeo/homebrew-osgeo4mac/blob/master/Formula/ecwjp2-sdk.rb). Open dmg, open pkg and install to default location (Desktop Read-Only Free type)
 - install homebrew packages by `install_brew_packages.bash`
 - get proj datumgrids by running `scripts/fetch_proj-datumgrid.bash`

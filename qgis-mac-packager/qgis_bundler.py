@@ -80,7 +80,7 @@ if not os.path.exists(os.path.join(pyqtHostDir, "QtCore.so")):
 
 pythonHost = args.python
 if not os.path.exists(pythonHost):
-    raise QGISBundlerError(args.pyqt + " does not contain Python")
+    raise QGISBundlerError(args.pythonHost + " does not contain Python")
 
 if not os.path.exists(os.path.join(args.qgis_install_tree, "QGIS.app")):
     raise QGISBundlerError(args.qgis_install_tree + " does not contain QGIS.app")
@@ -248,6 +248,10 @@ if os.path.exists(pa.binDir + "/qgis_bench.app"):
 
 print("Append Python site-packages")
 append_recursively_site_packages(cp, pa.pysitepackages, pa.pythonDir)
+print("Add pyqt")
+for item in os.listdir(pa.pyqtHostDir):
+    if not os.path.exists(pa.pythonDir + "/PyQt5/" + item):
+        cp.copy(pa.pyqtHostDir + item, pa.pythonDir + "/PyQt5/" + item)
 
 # TODO copy of python site-packages should be rather
 # selective an not copy-all and then remove
@@ -274,10 +278,11 @@ if not os.path.exists(startup_script):
     raise QGISBundlerError("Missing resource " + startup_script)
 cp.copy(startup_script, os.path.join(pa.pythonDir, "pyqgis-startup.py"))
 
-print("Copying PyQt " + pyqtHostDir)
+pyqtpluginfile = os.path.join(pyqtHostDir, os.pardir, os.pardir, os.pardir, os.pardir, "share", "pyqt", "plugins")
+print("Copying PyQt plugins " + pyqtpluginfile)
 if not os.path.exists(pa.pythonDir + "/PyQt5/Qt.so"):
     raise QGISBundlerError("Inconsistent python with pyqt5, should be copied in previous step")
-pyqtpluginfile = os.path.join(pyqtHostDir, os.pardir, os.pardir, os.pardir, os.pardir, "share", "pyqt", "plugins")
+
 cp.copytree(pyqtpluginfile, pa.pluginsDir + "/PyQt5", True)
 subprocess.call(['chmod', '-R', '+w', pa.pluginsDir + "/PyQt5"])
 

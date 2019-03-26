@@ -40,6 +40,7 @@ brew install osgeo/osgeo4mac/osgeo-qt-psql
 brew install osgeo/osgeo4mac/osgeo-pyqt
 brew link osgeo-pyqt
 brew install osgeo/osgeo4mac/osgeo-pyqt-webkit
+brew link osgeo-pyqt-webkit --force
 
 pip3 install python-dateutil
 pip3 install cython
@@ -86,6 +87,7 @@ pip3 install dropbox
 pip3 install GitPython
 pip3 install owslib
 brew install wget
+brew install bash-completion
 
 # https://github.com/al45tair/dmgbuild/issues/12
 pip install dmgbuild
